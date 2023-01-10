@@ -1,6 +1,17 @@
 # Imports
 from les_meves_funcions.funcions_menu import *
 from pyfiglet import figlet_format
+from os import remove
+
+remove("./logfileSevenAndHalf.txt")
+
+# menus
+
+# Headers
+hr00 = "*" * 100 + "\n" + figlet_format("Seven and half", font="starwars") + "*" * 100 + "\n\n"
+# Options
+mn00 = "1)Add/Remove/Show Players\n2)Settings\n3)Play Game\n4)Ranking\n5)Reports\n6)Exit"
+inputOptText = "\nChoose an option:\n"
 
 # Variables
 leave = False
@@ -8,13 +19,7 @@ leave = False
 # Loops
 while not leave:
     print()
-    textOpts = "*" * 100 + "\n" + figlet_format("Seven and half", font="starwars") + "*" * 100 + \
-               "\n\n1)Add/Remove/Show Players\n2)Settings\n3)Play Game\n4)Ranking\n5)Reports\n6)Exit"
-    inputOptText = "\nChoose an option:\n"
-    rangeList = [1, 2, 3, 4, 5, 6]
-    exceptions = []
-    dictionary = {}  # Aqui va el nombre del dicc sin los {} (si se da el caso de usar un dicc)
-    opt = getOpt(textOpts, inputOptText, rangeList, dictionary, exceptions)
+    opt = getOpt(hr00, mn00, "\nChoose an option:\n", [1, 2, 3, 4, 5, 6], [], {})
 
     if opt == 1:
         print("Add/Remove/Show Players")
