@@ -14,7 +14,7 @@ inputOptText = "\nChoose an option:\n"
 
 # Variables
 leave = False
-prueba()
+
 # Loops
 while not leave:
     print()
@@ -27,6 +27,7 @@ while not leave:
         print("Settings")
 
     elif opt == 3:
+        check_settings()
         print("Play game")
 
     elif opt == 4:
