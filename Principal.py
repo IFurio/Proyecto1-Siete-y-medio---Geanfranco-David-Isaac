@@ -1,9 +1,8 @@
 # Imports
 from les_meves_funcions.funcions_menu import *
+from les_meves_funcions.funcions_joc import *
 from pyfiglet import figlet_format
-from os import remove
 
-remove("./logfileSevenAndHalf.txt")
 
 # menus
 
@@ -15,7 +14,7 @@ inputOptText = "\nChoose an option:\n"
 
 # Variables
 leave = False
-
+prueba()
 # Loops
 while not leave:
     print()
