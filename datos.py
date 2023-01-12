@@ -96,6 +96,12 @@ cartas = {
         "D09": {"literal": "Nueve de Diamantes", "value": 9, "priority": 4, "realValue": 0.5},
         "D0J": {"literal": "Jota de Diamantes", "value": 10, "priority": 4, "realValue": 0.5},
         "D0Q": {"literal": "Dama de Diamantes", "value": 11, "priority": 4, "realValue": 0.5},
-        "D0K": {"literal": "Rey de Diamantes", "value": 12, "priority": 4   , "realValue": 0.5}
+        "D0K": {"literal": "Rey de Diamantes", "value": 12, "priority": 4, "realValue": 0.5}
     }
 }
+
+contextGame = {"players": [], "round": 0, "maxRounds": 5, "deck": ""}
+
+players = {"id": "32324323a", "name": "man", "human": True, "bank": True, "initial_card": "", "priority": 0,
+           "type": 30, "bet": 0, "points": 0, "cards": [], "round_points": 0
+           }
