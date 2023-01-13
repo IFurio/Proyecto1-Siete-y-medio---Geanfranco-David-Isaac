@@ -100,8 +100,26 @@ cartas = {
     }
 }
 
+deck_esp_list = ['O01', 'O02', 'O03', 'O04', 'O05', 'O06', 'O07', 'O10', 'O11', 'O12',
+                 'C01', 'C02', 'C03', 'C04', 'C05', 'C06', 'C07', 'C10', 'C11', 'C12',
+                 'E01', 'E02', 'E03', 'E04', 'E05', 'E06', 'E07', 'E10', 'E11', 'E12',
+                 'B01', 'B02', 'B03', 'B04', 'B05', 'B06', 'B07', 'B10', 'B11', 'B12']
+
+deck_pok_list = ['T01', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T0J', 'T0Q', 'T0K',
+                 'P01', 'P02', 'P03', 'P04', 'P05', 'P06', 'P07', 'P0J', 'P0Q', 'P0K',
+                 'H01', 'H02', 'H03', 'H04', 'H05', 'H06', 'H07', 'H0J', 'H0Q', 'H0K',
+                 'D01', 'D02', 'D03', 'D04', 'D05', 'D06', 'D07', 'D0J', 'D0Q', 'D0K']
+
 contextGame = {"players": [], "round": 0, "maxRounds": 5, "deck": ""}
 
-players = {"id": "32324323a", "name": "man", "human": True, "bank": True, "initial_card": "", "priority": 0,
-           "type": 30, "bet": 0, "points": 0, "cards": [], "round_points": 0
-           }
+players = {
+    "32324323A": {
+        "name": "Pepe", "human": False, "bank": False, "initial_card": "", "priority": 0,
+        "type": 30, "bet": 3, "points": 0, "cards": [], "round_points": 0},
+    "11233455B": {
+        "name": "Juan", "human": False, "bank": False, "initial_card": "", "priority": 0,
+        "type": 40, "bet": 4, "points": 0, "cards": [], "round_points": 0},
+    "99877654C": {
+        "name": "David", "human": False, "bank": False, "initial_card": "", "priority": 0,
+        "type": 50, "bet": 5, "points": 0, "cards": [], "round_points": 0}
+}
