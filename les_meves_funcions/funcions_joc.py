@@ -46,3 +46,16 @@ def probToPass(points, deckList, deckName):
 # Funcion loop de las rondas
 def round_loop():
     used_cards_list = []
+
+
+def checkMinimun2PlayerWithPoints():
+    count = 0
+    for player_id in contextGame["players"]:
+        if players[player_id]["points"] > 0:
+            count += 1
+
+    if count < 2:
+        return False
+
+    else:
+        return True
