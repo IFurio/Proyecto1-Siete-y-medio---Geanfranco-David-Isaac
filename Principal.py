@@ -5,7 +5,6 @@ from pyfiglet import figlet_format
 
 
 # menus
-
 # Headers
 hr00 = "*" * 100 + "\n" + figlet_format("Seven and half", font="starwars") + "*" * 100 + "\n\n"
 # Options
@@ -27,8 +26,9 @@ while not leave:
         print("Settings")
 
     elif opt == 3:
-        check_settings()
-        print("Play game")
+        the_game_starts = check_settings()
+        if the_game_starts:
+            print("Play game")
 
     elif opt == 4:
         print("Ranking")
