@@ -1,5 +1,5 @@
 # Imports
-from les_meves_funcions.datos import *
+from datos import *
 import random
 
 
@@ -11,11 +11,6 @@ def check_settings():
 
         if contextGame["deck"] == "":
             raise ValueError("Select a card deck to start the game!")
-        else:
-            if contextGame["deck"] == "baraja_esp":
-                deck = ("baraja_esp", deck_esp_list)
-            else:
-                deck = ("baraja_poker", deck_pok_list)
 
         if contextGame["round"] < 5:
             contextGame["round"] = 5
@@ -28,22 +23,15 @@ def check_settings():
 
 
 # Funcion calculo de probabilidad de pasar 7 y medio
-def probToPass(points, deckList, deckName):
-    not_used_cards_list = []
-
-    # For para guardar todas las cartas que quedan en el mazo en una variable
-    for i in range(len(deckList)):
-        if not deckList[i] in used_cards_list:
-            not_used_cards_list.append(deckList[i])
-
+def probToPass(points, deckName, deckList):
     # Este count sirve para saber cuantas cartas hacen que te pases de 7 y medio
     count = 0
-    for card in not_used_cards_list:
+    for card in deckList:
         if cartas[deckName][card]["realValue"] + points > 7.5:
             count += 1
 
     # Cuando ya tenemos todas las cartas que nos hacen pasarnos hacemos el calculo y lo devolvemos
-    return (count * 100) // len(not_used_cards_list)
+    return (count * 100) / len(deckList)
 
 
 # Funcion para robar cartas
@@ -51,14 +39,28 @@ def drawCard(deckList):
     while True:
         # Se coje un numero aleatorio dentro de el rango de cartas que tenemos
         card = random.randint(0, len(deckList) - 1)
-        # Miramos si la carta asignada a ese numero no esta en usedCardsList
-        if not deckList[card] in used_cards_list:
-            # Metemos la carta en la usedCardsList
-            used_cards_list.append(deckList[card])
-            # Hacemos un return con el nombre de la carta
-            return deckList[card]
+        # Metemos la carta en la usedCardsList
+        deckList.append(deckList[card])
+        # Hacemos un return con el nombre de la carta
+        return deckList[card]
 
 
 # Funcion loop de las rondas
 def round_loop():
-    used_cards_list = []
+    while True:
+        # Se devuelven las cartas al mazo
+        deck = list(cartas[contextGame["deck"]].keys())
+        for player in contextGame["players"]:
+            players[player]["cards"] = []
+        used_cards_list = []
+
+        for player in contextGame["players"]:
+            if players[player]["bank"]:
+                print()
+            else:
+                while players[player]["type"] <= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                    card = drawCard(deck)
+                    used_cards_list.append(card)
+                    players[player]["cards"].append(card)
+                    players[player]["round_points"] += cartas[contextGame["deck"]]["realValue"]
+
