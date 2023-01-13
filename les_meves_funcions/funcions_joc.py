@@ -1,8 +1,6 @@
 # Imports
 from les_meves_funcions.datos import *
-
-# Variable, necesaria????!!!? Si no hace falta o puede ir a otro sitio quitadla
-used_cards_list = []
+import random
 
 
 # Funcion de comprovaciones
@@ -13,6 +11,11 @@ def check_settings():
 
         if contextGame["deck"] == "":
             raise ValueError("Select a card deck to start the game!")
+        else:
+            if contextGame["deck"] == "baraja_esp":
+                deck = ("baraja_esp", deck_esp_list)
+            else:
+                deck = ("baraja_poker", deck_pok_list)
 
         if contextGame["round"] < 5:
             contextGame["round"] = 5
@@ -41,6 +44,19 @@ def probToPass(points, deckList, deckName):
 
     # Cuando ya tenemos todas las cartas que nos hacen pasarnos hacemos el calculo y lo devolvemos
     return (count * 100) // len(not_used_cards_list)
+
+
+# Funcion para robar cartas
+def drawCard(deckList):
+    while True:
+        # Se coje un numero aleatorio dentro de el rango de cartas que tenemos
+        card = random.randint(0, len(deckList) - 1)
+        # Miramos si la carta asignada a ese numero no esta en usedCardsList
+        if not deckList[card] in used_cards_list:
+            # Metemos la carta en la usedCardsList
+            used_cards_list.append(deckList[card])
+            # Hacemos un return con el nombre de la carta
+            return deckList[card]
 
 
 # Funcion loop de las rondas
