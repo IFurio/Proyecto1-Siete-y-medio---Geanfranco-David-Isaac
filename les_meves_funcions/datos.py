@@ -110,7 +110,7 @@ deck_pok_list = ['T01', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T0J', 'T0Q', 
                  'H01', 'H02', 'H03', 'H04', 'H05', 'H06', 'H07', 'H0J', 'H0Q', 'H0K',
                  'D01', 'D02', 'D03', 'D04', 'D05', 'D06', 'D07', 'D0J', 'D0Q', 'D0K']
 
-contextGame = {"players": [], "round": 0, "maxRounds": 5, "deck": ""}
+contextGame = {"players": ["32324323A","11233455B","99877654C"], "round": 0, "maxRounds": 5, "deck": ""}
 
 players = {
     "32324323A": {
@@ -123,3 +123,8 @@ players = {
         "name": "David", "human": False, "bank": False, "initial_card": "", "priority": 0,
         "type": 50, "bet": 5, "points": 0, "cards": [], "round_points": 0}
 }
+cardgame = {'cardgame_id': 0, 'players': 0, 'start_hour':Hora
+de inicio de artida ( datetime), 'rounds': Número de rondas, 'end_hour': hora ﬁnal de partida
+( datetime) }
+
+used_cardgame_id = []

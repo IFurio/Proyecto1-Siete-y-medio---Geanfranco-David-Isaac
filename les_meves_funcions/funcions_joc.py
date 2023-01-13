@@ -1,5 +1,6 @@
 # Imports
 from les_meves_funcions.datos import *
+from datetime import *
 
 # Variable, necesaria????!!!? Si no hace falta o puede ir a otro sitio quitadla
 used_cards_list = []
@@ -46,3 +47,28 @@ def probToPass(points, deckList, deckName):
 # Funcion loop de las rondas
 def round_loop():
     used_cards_list = []
+
+# contextGame = {"players": [], "round": 0, "maxRounds": 5, "deck": ""}
+# Funcion general para llamara a las demas funciones y hacer los sets.
+def SetRound_setting():
+    print("Hacer la llamada a las otras funciones")
+    Set_InitialPoints()
+    Set_GameTime()
+
+# Poner los puntos de inicio a cada jugador (20)
+def Set_InitialPoints():
+    for player in contextGame["players"]:
+        players[player]["points"]=20
+    return
+# Usando el modulo datetime (importado) pedimos la hora local actual
+def Set_GameTime():
+    hora_local=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #######################################################################################################
+    ####################GUARDAR HORA EN EL DICCIONARIO DE LA PARTIDA ######################################
+    #######################################################################################################
+    print(hora_local)
+    return
+def Set_GameID():
+    print(len(used_cardgame_id))
+    new_id = len(used_cardgame_id)+1
+    return
