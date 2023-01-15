@@ -47,6 +47,38 @@ def drawCard(deckList):
         return card
 
 
+# Funcion para pagar y cobrar apuestas y guardar los candidatos a banca
+def pointsDistribution(bank, candidates):
+    for i in range(len(contextGame["players"]) - 2, -1, -1):
+        # En este if se entra si la banca le a ganado la ronda a este jugador
+        if players[contextGame["players"][i]]["round_points"] <= players[bank]["round_points"]:
+            players[contextGame["players"][i]]["points"] -= players[contextGame["players"][i]]["bet"]
+            players[bank]["points"] += players[contextGame["players"][i]]["bet"]
+
+        # En este else se entre si el jugador gana la ronda a la banca
+        else:
+            # If para saber si el jugador a sacado 7.5 y por lo tanto hay que pagarle doble
+            if players[contextGame["players"][i]]["round_points"] == 7.5:
+                candidates.append(contextGame["players"][i])
+                if players[contextGame["players"][i]]["bet"] * 2 > players[bank]["points"]:
+                    players[contextGame["players"][i]]["points"] += players[bank]["points"]
+                    players[bank]["points"] = 0
+                    break
+                else:
+                    players[contextGame["players"][i]]["points"] += (players[contextGame["players"][i]]["bet"] * 2)
+                    players[bank]["points"] -= (players[contextGame["players"][i]]["bet"] * 2)
+
+            # Aqui entra para pagar normal
+            else:
+                if players[contextGame["players"][i]]["bet"] > players[bank]["points"]:
+                    players[contextGame["players"][i]]["points"] += players[bank]["points"]
+                    players[bank]["points"] = 0
+                    break
+                else:
+                    players[contextGame["players"][i]]["points"] += players[contextGame["players"][i]]["bet"]
+                    players[bank]["points"] -= players[contextGame["players"][i]]["bet"]
+
+
 # Funcion calculo de probabilidad de pasar 7 y medio
 def probToPass(points, deckName, deckList):
     # Este count sirve para saber cuantas cartas hacen que te pases de 7 y medio
@@ -74,7 +106,8 @@ def playersWinningBank(bank):
 # Funcion loop de las rondas
 def round_loop():
     while checkMinimun2PlayerWithPoints() and contextGame["round"] < contextGame["maxRounds"]:
-        # Se devuelven las cartas al mazo y se ponen los puntos a cero
+        # Se devuelven las cartas al mazo, se ponen los puntos a cero y se resetean los candidatos a la banca
+        bankCandidates = []
         deck = list(cartas[contextGame["deck"]].keys())
         for player in contextGame["players"]:
             players[player]["cards"] = []
@@ -82,8 +115,18 @@ def round_loop():
 
         # Loop para que cada jugador juegue su turno
         for player in contextGame["players"]:
-            # En este IF juega la banca
-            if players[player]["bank"]:
+            # Aqui juegan los jugadores normales
+            if not players[player]["bank"] and players[player]["points"] > 0:
+                while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                    card = drawCard(deck)
+                    players[player]["cards"].append(card)
+                    players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+                # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
+                if players[player]["round_points"] > 7.5:
+                    players[player]["round_points"] = -1
+
+            # Aqui juega la banca y al terminar de pedir se reparten los puntos
+            else:
                 while True:
                     # Guardamos en count la cantidad de jugadores que nos superan y en points los puntos que pagaremos
                     count, points = playersWinningBank(player)
@@ -104,20 +147,31 @@ def round_loop():
                     else:
                         break
 
-            # Aqui juegan los jugadores normales
-            else:
-                while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
-                    card = drawCard(deck)
-                    players[player]["cards"].append(card)
-                    players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+                # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
+                if players[player]["round_points"] > 7.5:
+                    players[player]["round_points"] = -1
+
+                # Utilizamos esta variable para repartir los puntos en orden de prioridad y se apuntan candidatos a bank
+                pointsDistribution(player, bankCandidates)
+
+                # ¡¡¡REVISAR!!!
+                # Miramos si tenemos que hacer cambio de banca
+                if len(bankCandidates) > 0:
+                    players[player]["bank"] = False
+                    players[bankCandidates[len(bankCandidates) - 1]]["bank"] = True
+
+                elif players[player]["points"] == 0:
+                    players[player]["bank"] = False
+                    players[contextGame["players"][len(contextGame) - 2]]["bank"] = True
 
         # Prints para hacer pruebas de funcionamiento
-        print(contextGame["round"])
-        print(deck)
+        print("Ronda: " + str(contextGame["round"]) + "\n")
         for player in contextGame["players"]:
             print(player + " " + str(players[player]["bank"]) + ":")
-            print(players[player]["cards"])
-            print(players[player]["round_points"])
-            print(probToPass(players[player]["round_points"], contextGame["deck"], deck))
+            print("Cartas en mano:", players[player]["cards"])
+            print("Bet: " + str(players[player]["bet"]))
+            print("Round points: " + str(players[player]["round_points"]))
+            print("Player points: " + str(players[player]["points"]))
+            print("ProbToPass: " + str(probToPass(players[player]["round_points"], contextGame["deck"], deck)) + "\n")
         input("Pulsa la intro")
         contextGame["round"] += 1
