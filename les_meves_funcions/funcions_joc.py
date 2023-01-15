@@ -38,13 +38,51 @@ def checkMinimun2PlayerWithPoints():
 
 # Funcion para robar cartas
 def drawCard(deckList):
-    while True:
-        # Se coje un numero aleatorio dentro de el rango de cartas que tenemos
-        card = deckList[random.randint(0, len(deckList) - 1)]
-        # Quitamos la carta de la deck list
-        deckList.remove(card)
-        # Hacemos un return con el nombre de la carta
-        return card
+    # ¡¡¡REVISAR!!!
+    # Se coje un numero aleatorio dentro de el rango de cartas que tenemos
+    card = deckList[random.randint(0, len(deckList) - 1)]
+    # Quitamos la carta de la deck list
+    deckList.remove(card)
+    # Hacemos un return con el nombre de la carta
+    return card
+
+
+# Funcion para ordenar jugadores
+def orderPlayers(deck):
+    for pas in range(len(contextGame["players"]) - 1):
+        # Esta variable sirve para no tener que hacer comprovaciones de mas
+        listIsOrdered = True
+        for i in range(len(contextGame["players"]) - 1 - pas):
+
+            # Este if es para que si el jugador es banca pase para delante
+            if players[contextGame["players"][i]]["bank"]:
+                changeBox = contextGame["players"][i]
+                contextGame["players"][i] = contextGame["players"][i + 1]
+                contextGame["players"][i + 1] = changeBox
+                listIsOrdered = False
+
+            # Aqui se comprueba si la carta inicial del jugador i es mas alta que la de i + 1 y se cambia de puesto,
+            # tambien se comprueba si el jugador i + 1 es banca para no hacer el cambio en ese caso
+            elif cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
+                if not players[contextGame["players"][i + 1]]["bank"]:
+                    changeBox = contextGame["players"][i]
+                    contextGame["players"][i] = contextGame["players"][i + 1]
+                    contextGame["players"][i + 1] = changeBox
+                    listIsOrdered = False
+
+            # Si los dos jugadores sacan la misma cifra se comprueban prioridades, tambien se vuelve a comprobar si
+            # i + 1 es banca para no hacer el cambio.
+            elif cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] == cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
+                if not players[contextGame["players"][i + 1]]["bank"]:
+                    if cartas[deck][players[contextGame["players"][i]]["initial_card"]]["priority"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["priority"]:
+                        changeBox = contextGame["players"][i]
+                        contextGame["players"][i] = contextGame["players"][i + 1]
+                        contextGame["players"][i + 1] = changeBox
+                        listIsOrdered = False
+
+        # Se rompe el for por que ya esta all ordered
+        if listIsOrdered:
+            break
 
 
 # Funcion para pagar y cobrar apuestas y guardar los candidatos a banca
@@ -115,35 +153,41 @@ def round_loop():
 
         # Loop para que cada jugador juegue su turno
         for player in contextGame["players"]:
+
             # Aqui juegan los jugadores normales
             if not players[player]["bank"] and players[player]["points"] > 0:
                 while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
                     card = drawCard(deck)
                     players[player]["cards"].append(card)
                     players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+
                 # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
                 if players[player]["round_points"] > 7.5:
                     players[player]["round_points"] = -1
 
-            # Aqui juega la banca y al terminar de pedir se reparten los puntos
+            # Aqui juega la banca y al terminar de pedir se reparten los puntos, se cambia de banca y se ordenan players
             else:
                 while True:
                     # Guardamos en count la cantidad de jugadores que nos superan y en points los puntos que pagaremos
                     count, points = playersWinningBank(player)
+
                     # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
                     if count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
                         players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+
                     # Si la banca gana a todos los jugadores se planta
                     elif count == 0:
                         break
+
                     # En esta comparacion la banca pide como un jugador normal
-                    elif players[player]["type"] >= \
-                            probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                    elif players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
                         players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+
+                    # En caso de que su nivel de resiesgo se pase se planta
                     else:
                         break
 
@@ -154,15 +198,46 @@ def round_loop():
                 # Utilizamos esta variable para repartir los puntos en orden de prioridad y se apuntan candidatos a bank
                 pointsDistribution(player, bankCandidates)
 
-                # ¡¡¡REVISAR!!!
-                # Miramos si tenemos que hacer cambio de banca
+                # Miramos si tenemos que hacer cambio de banca con los candidatos a banca
                 if len(bankCandidates) > 0:
                     players[player]["bank"] = False
-                    players[bankCandidates[len(bankCandidates) - 1]]["bank"] = True
+                    players[bankCandidates[0]]["bank"] = True
 
+                # Si no hay candidatos a banca miramos si la banca no tiene puntos y la cambiamos por el siguiente
+                # en la lista de prioridad.
                 elif players[player]["points"] == 0:
-                    players[player]["bank"] = False
-                    players[contextGame["players"][len(contextGame) - 2]]["bank"] = True
+                    count = 1
+                    while True:
+                        # ¡¡¡REVISAR!!!
+                        if players[contextGame["players"][len(contextGame) - count]]["points"] > 0:
+                            players[player]["bank"] = False
+                            players[contextGame["players"][len(contextGame) - count]]["bank"] = True
+                        count += 1
+
+        # Ordenamos los jugadores
+        for pas in range(len(contextGame["players"]) - 1):
+            # Variable para saber cuando esta ordenada la lista
+            listIsOrdered = True
+            for i in range(len(contextGame["players"]) - 1 - pas):
+
+                # Este if es para que si el jugador es banca pase para delante
+                if players[contextGame["players"][i]]["bank"]:
+                    changeBox = contextGame["players"][i]
+                    contextGame["players"][i] = contextGame["players"][i + 1]
+                    contextGame["players"][i + 1] = changeBox
+                    listIsOrdered = False
+
+                # Este if es para pasar delante al jugador con mas prioridad a no ser que i + 1 sea bank
+                if players[contextGame["players"][i]]["priority"] > players[contextGame["players"][i + 1]]["priority"]:
+                    if not players[contextGame["players"][i + 1]]["bank"]:
+                        changeBox = contextGame["players"][i]
+                        contextGame["players"][i] = contextGame["players"][i + 1]
+                        contextGame["players"][i + 1] = changeBox
+                        listIsOrdered = False
+
+            # Si la lista ya esta ordena se rompe el bucle
+            if listIsOrdered:
+                break
 
         # Prints para hacer pruebas de funcionamiento
         print("Ronda: " + str(contextGame["round"]) + "\n")
