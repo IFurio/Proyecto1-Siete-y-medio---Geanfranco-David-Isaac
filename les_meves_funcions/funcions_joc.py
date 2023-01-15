@@ -12,8 +12,8 @@ def check_settings():
         if contextGame["deck"] == "":
             raise ValueError("Select a card deck to start the game!")
 
-        if contextGame["round"] < 5:
-            contextGame["round"] = 5
+        if contextGame["maxRounds"] < 5:
+            contextGame["maxRounds"] = 5
 
     except ValueError as fail:
         print(fail)
@@ -40,11 +40,11 @@ def checkMinimun2PlayerWithPoints():
 def drawCard(deckList):
     while True:
         # Se coje un numero aleatorio dentro de el rango de cartas que tenemos
-        card = random.randint(0, len(deckList) - 1)
+        card = deckList[random.randint(0, len(deckList) - 1)]
         # Quitamos la carta de la deck list
         deckList.remove(card)
         # Hacemos un return con el nombre de la carta
-        return deckList[card]
+        return card
 
 
 # Funcion calculo de probabilidad de pasar 7 y medio
@@ -73,7 +73,7 @@ def playersWinningBank(bank):
 
 # Funcion loop de las rondas
 def round_loop():
-    while checkMinimun2PlayerWithPoints() and contextGame["round"] <= contextGame["maxRounds"]:
+    while checkMinimun2PlayerWithPoints() and contextGame["round"] < contextGame["maxRounds"]:
         # Se devuelven las cartas al mazo y se ponen los puntos a cero
         deck = list(cartas[contextGame["deck"]].keys())
         for player in contextGame["players"]:
@@ -85,9 +85,10 @@ def round_loop():
             # En este IF juega la banca
             if players[player]["bank"]:
                 while True:
+                    # Guardamos en count la cantidad de jugadores que nos superan y en points los puntos que pagaremos
                     count, points = playersWinningBank(player)
                     # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
-                    if count == len(contextGame["players"] - 1) or points >= players[player]["points"]:
+                    if count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
                         players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
@@ -95,17 +96,28 @@ def round_loop():
                     elif count == 0:
                         break
                     # En esta comparacion la banca pide como un jugador normal
-                    elif players[player]["type"] <= probToPass(players[player]["round_points"],
-                                                               contextGame["deck"], deck):
+                    elif players[player]["type"] >= \
+                            probToPass(players[player]["round_points"], contextGame["deck"], deck):
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
                         players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
                     else:
                         break
 
-            # Aqui juegan el resto de jugadores
+            # Aqui juegan los jugadores normales
             else:
-                while players[player]["type"] <= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
                     card = drawCard(deck)
                     players[player]["cards"].append(card)
                     players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+
+        # Prints para hacer pruebas de funcionamiento
+        print(contextGame["round"])
+        print(deck)
+        for player in contextGame["players"]:
+            print(player + " " + str(players[player]["bank"]) + ":")
+            print(players[player]["cards"])
+            print(players[player]["round_points"])
+            print(probToPass(players[player]["round_points"], contextGame["deck"], deck))
+        input("Pulsa la intro")
+        contextGame["round"] += 1
