@@ -100,7 +100,7 @@ cartas = {
     }
 }
 
-contextGame = {"players": [], "round": 0, "maxRounds": 5, "deck": ""}
+contextGame = {"players": [], "round": 0, "maxRounds": 0, "deck": ""}
 
 players = {
     "32324323A": {
