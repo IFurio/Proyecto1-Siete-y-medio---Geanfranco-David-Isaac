@@ -100,14 +100,14 @@ cartas = {
     }
 }
 
-contextGame = {"players": ["32324323A","11233455B","99877654C"], "round": 0, "maxRounds": 0, "deck": "baraja_esp", "bank": ""}
+contextGame = {"players": [], "round": 0, "maxRounds": 0, "deck": "baraja_esp", "bank": ""}
 
 players = {
     "32324323A": {
         "name": "Pepe", "human": False, "bank": False, "initial_card": "", "priority": 0,
         "type": 30, "bet": 3, "points": 0, "cards": [], "round_points": 0},
     "11233455B": {
-        "name": "Juan", "human": False, "bank": False, "initial_card": "C07", "priority": 0,
+        "name": "Juan", "human": False, "bank": False, "initial_card": "", "priority": 0,
         "type": 40, "bet": 4, "points": 0, "cards": [], "round_points": 0},
     "99877654C": {
         "name": "David", "human": False, "bank": False, "initial_card": "", "priority": 0,
