@@ -75,6 +75,7 @@ def orderPlayers(deck):
         if listIsOrdered:
             break
 
+
 # Funcion general para llamar a las demas funciones y hacer los sets.
 def SetRound_setting():
     # Ponemos los puntos iniciales
@@ -85,12 +86,14 @@ def SetRound_setting():
     SetPriority()
     return
 
+
 # Poner los puntos de inicio a cada jugador (20)
 def Set_InitialPoints():
     # Accedemos a la lista de jugadores que van a participar en la partida y les ponemos los puntos iterando en la lista.
     for player in contextGame["players"]:
         players[player]["points"]=20
     return
+
 
 # Usando el modulo datetime (importado) pedimos la hora local actual
 def Set_GameTime():
@@ -101,6 +104,7 @@ def Set_GameTime():
     print(hora_local)
     return
 
+
 # Definir la prioridad de cada jugador antes de comenzar la partiad.
 def SetPriority():
     deck = list(cartas[contextGame["deck"]].keys())
@@ -109,6 +113,7 @@ def SetPriority():
     orderPlayers(contextGame["deck"])
     players[contextGame["players"][-1]]["bank"] = True
     return
+
 
 # Funcion para comprabarsi tiene que terminar la partida
 def checkMinimun2PlayerWithPoints():
