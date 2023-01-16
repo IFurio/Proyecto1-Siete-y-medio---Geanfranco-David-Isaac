@@ -1,6 +1,7 @@
 # Imports
-from les_meves_funcions.datos import *
 from les_meves_funcions.funcions_menu import *
+from les_meves_funcions.datos import *
+from datetime import *
 import random
 
 
@@ -39,7 +40,6 @@ def checkMinimun2PlayerInGame():
 
 # Funcion para robar cartas
 def drawCard(deckList):
-    # ¡¡¡REVISAR!!!
     # Se coje un numero aleatorio dentro de el rango de cartas que tenemos
     card = deckList[random.randint(0, len(deckList) - 1)]
     # Quitamos la carta de la deck list
@@ -54,36 +54,74 @@ def orderPlayers(deck):
         # Esta variable sirve para no tener que hacer comprovaciones de mas
         listIsOrdered = True
         for i in range(len(contextGame["players"]) - 1 - pas):
-
-            # Este if es para que si el jugador es banca pase para delante
-            if players[contextGame["players"][i]]["bank"]:
+            # Aqui se comprueba si la carta inicial del jugador i es mas alta que la de i + 1 y se cambia de puesto,
+            # tambien se comprueba si el jugador i + 1 es banca para no hacer el cambio en ese caso
+            if cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
                 changeBox = contextGame["players"][i]
                 contextGame["players"][i] = contextGame["players"][i + 1]
                 contextGame["players"][i + 1] = changeBox
                 listIsOrdered = False
 
-            # Aqui se comprueba si la carta inicial del jugador i es mas alta que la de i + 1 y se cambia de puesto,
-            # tambien se comprueba si el jugador i + 1 es banca para no hacer el cambio en ese caso
-            elif cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
-                if not players[contextGame["players"][i + 1]]["bank"]:
+            # Si los dos jugadores sacan la misma cifra se comprueban prioridades, tambien se vuelve a comprobar si
+            # i + 1 es banca para no hacer el cambio.
+            elif cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] == cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
+                if cartas[deck][players[contextGame["players"][i]]["initial_card"]]["priority"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["priority"]:
                     changeBox = contextGame["players"][i]
                     contextGame["players"][i] = contextGame["players"][i + 1]
                     contextGame["players"][i + 1] = changeBox
                     listIsOrdered = False
 
-            # Si los dos jugadores sacan la misma cifra se comprueban prioridades, tambien se vuelve a comprobar si
-            # i + 1 es banca para no hacer el cambio.
-            elif cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] == cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
-                if not players[contextGame["players"][i + 1]]["bank"]:
-                    if cartas[deck][players[contextGame["players"][i]]["initial_card"]]["priority"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["priority"]:
-                        changeBox = contextGame["players"][i]
-                        contextGame["players"][i] = contextGame["players"][i + 1]
-                        contextGame["players"][i + 1] = changeBox
-                        listIsOrdered = False
-
         # Se rompe el for por que ya esta all ordered
         if listIsOrdered:
             break
+
+# Funcion general para llamar a las demas funciones y hacer los sets.
+def SetRound_setting():
+    # Ponemos los puntos iniciales
+    Set_InitialPoints()
+    # Definimos la hora de inicio
+    Set_GameTime()
+    # Definimos la prioridad de los jugadores
+    SetPriority()
+    return
+
+# Poner los puntos de inicio a cada jugador (20)
+def Set_InitialPoints():
+    # Accedemos a la lista de jugadores que van a participar en la partida y les ponemos los puntos iterando en la lista.
+    for player in contextGame["players"]:
+        players[player]["points"]=20
+    return
+
+# Usando el modulo datetime (importado) pedimos la hora local actual
+def Set_GameTime():
+    hora_local=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    #######################################################################################################
+    ####################GUARDAR HORA EN EL DICCIONARIO DE LA PARTIDA ######################################
+    #######################################################################################################
+    print(hora_local)
+    return
+
+# Definir la prioridad de cada jugador antes de comenzar la partiad.
+def SetPriority():
+    deck = list(cartas[contextGame["deck"]].keys())
+    for player in contextGame["players"]:
+        players[player]["initial_card"] = drawCard(deck)
+    orderPlayers(contextGame["deck"])
+    players[contextGame["players"][-1]]["bank"] = True
+    return
+
+# Funcion para comprabarsi tiene que terminar la partida
+def checkMinimun2PlayerWithPoints():
+    count = 0
+    for player_id in contextGame["players"]:
+        if players[player_id]["points"] > 0:
+            count += 1
+
+    if count < 2:
+        return False
+
+    else:
+        return True
 
 
 # Funcion para apuestas
