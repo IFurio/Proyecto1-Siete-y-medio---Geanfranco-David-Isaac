@@ -1,5 +1,6 @@
 # Imports
-from datos import *
+from les_meves_funcions.datos import *
+from les_meves_funcions.funcions_menu import *
 import random
 
 
@@ -23,7 +24,7 @@ def check_settings():
 
 
 # Funcion para comprabarsi tiene que terminar la partida
-def checkMinimun2PlayerWithPoints():
+def checkMinimun2PlayerInGame():
     count = 0
     for player_id in contextGame["players"]:
         if players[player_id]["points"] > 0:
@@ -85,6 +86,51 @@ def orderPlayers(deck):
             break
 
 
+# Funcion para apuestas
+def setPlayersBet(bank):
+    for player in contextGame["players"]:
+
+        # Si el jugador no es banca se hacen apuestas
+        if player != bank:
+
+            # Si el jugador es humano se le pregunta si quiere apostar a mano o automaticamente
+            if players[player]["human"]:
+                opt = getOpt("Elige tu apuesta " + player + ":", "\n1)Automatica\n2)Manual", "Option:\n", [1, 2], {}, [])
+
+                # Modo automatico
+                if opt == 1:
+                    bet = (players[player]["type"] * players[player]["points"]) // 100
+                    if bet > players[bank]["points"]:
+                        bet = players[bank]["points"]
+                        players[player]["bet"] = bet
+                    else:
+                        players[player]["bet"] = bet
+
+                # Modo manual
+                else:
+                    while True:
+                        print("Select your bet " + player + ":")
+                        bet = input("Bet: \n")
+                        if not bet.isdigit():
+                            print("¡¡¡¡ERROR!!!!")
+                        elif int(bet) > players[player]["points"]:
+                            print("¡¡¡¡ERROR!!!!")
+                        elif int(bet) > players[bank]["points"]:
+                            print("¡¡¡¡ERROR!!!!")
+                        else:
+                            players[player]["bet"] = int(bet)
+                            break
+
+            # A los boots se les apuesta automaticamente
+            else:
+                bet = (players[player]["type"] * players[player]["points"]) // 100
+                if bet > players[bank]["points"]:
+                    bet = players[bank]["points"]
+                    players[player]["bet"] = bet
+                else:
+                    players[player]["bet"] = bet
+
+
 # Funcion para pagar y cobrar apuestas y guardar los candidatos a banca
 def pointsDistribution(bank, candidates):
     for i in range(len(contextGame["players"]) - 2, -1, -1):
@@ -143,19 +189,22 @@ def playersWinningBank(bank):
 
 # Funcion loop de las rondas
 def round_loop():
-    while checkMinimun2PlayerWithPoints() and contextGame["round"] < contextGame["maxRounds"]:
+    while checkMinimun2PlayerInGame() and contextGame["round"] < contextGame["maxRounds"]:
         # Se devuelven las cartas al mazo, se ponen los puntos a cero y se resetean los candidatos a la banca
         bankCandidates = []
-        deck = list(cartas[contextGame["deck"]].keys())
         for player in contextGame["players"]:
             players[player]["cards"] = []
             players[player]["round_points"] = 0
+        deck = list(cartas[contextGame["deck"]].keys())
+
+        # Se hacen las apuestas
+        setPlayersBet(contextGame["bank"])
 
         # Loop para que cada jugador juegue su turno
         for player in contextGame["players"]:
 
             # Aqui juegan los jugadores normales
-            if not players[player]["bank"] and players[player]["points"] > 0:
+            if not players[player]["bank"]:
                 while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
                     card = drawCard(deck)
                     players[player]["cards"].append(card)
@@ -171,18 +220,18 @@ def round_loop():
                     # Guardamos en count la cantidad de jugadores que nos superan y en points los puntos que pagaremos
                     count, points = playersWinningBank(player)
 
-                    # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
-                    if count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
-                        card = drawCard(deck)
-                        players[player]["cards"].append(card)
-                        players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
-
                     # Si la banca gana a todos los jugadores se planta
-                    elif count == 0:
+                    if count == 0:
                         break
 
                     # En esta comparacion la banca pide como un jugador normal
                     elif players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                        card = drawCard(deck)
+                        players[player]["cards"].append(card)
+                        players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+
+                    # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
+                    elif count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
                         players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
@@ -195,24 +244,40 @@ def round_loop():
                 if players[player]["round_points"] > 7.5:
                     players[player]["round_points"] = -1
 
-                # Utilizamos esta variable para repartir los puntos en orden de prioridad y se apuntan candidatos a bank
-                pointsDistribution(player, bankCandidates)
+        # Utilizamos esta variable para repartir los puntos en orden de prioridad y se apuntan candidatos a bank
+        pointsDistribution(contextGame["bank"], bankCandidates)
 
-                # Miramos si tenemos que hacer cambio de banca con los candidatos a banca
-                if len(bankCandidates) > 0:
-                    players[player]["bank"] = False
-                    players[bankCandidates[0]]["bank"] = True
+        # Hueco para insert de ronda
 
-                # Si no hay candidatos a banca miramos si la banca no tiene puntos y la cambiamos por el siguiente
-                # en la lista de prioridad.
-                elif players[player]["points"] == 0:
-                    count = 1
-                    while True:
-                        # ¡¡¡REVISAR!!!
-                        if players[contextGame["players"][len(contextGame) - count]]["points"] > 0:
-                            players[player]["bank"] = False
-                            players[contextGame["players"][len(contextGame) - count]]["bank"] = True
-                        count += 1
+        # Prints para hacer pruebas de funcionamiento
+        print("Ronda: " + str(contextGame["round"]) + "\n")
+        for player in contextGame["players"]:
+            print(player + " " + str(players[player]["bank"]) + ":")
+            print("Cartas en mano:", players[player]["cards"])
+            print("Bet: " + str(players[player]["bet"]))
+            print("Round points: " + str(players[player]["round_points"]))
+            print("Player points: " + str(players[player]["points"]))
+            print("ProbToPass: " + str(probToPass(players[player]["round_points"], contextGame["deck"], deck)) + "\n")
+        input("Pulsa la intro")
+        contextGame["round"] += 1
+
+        # Eliminamos jugadores sin puntos
+        for player in contextGame["players"]:
+            if players[player]["points"] == 0:
+                contextGame["players"].remove(player)
+
+        # Miramos si tenemos que hacer cambio de banca con los candidatos a banca
+        if len(bankCandidates) > 0:
+            players[contextGame["bank"]]["bank"] = False
+            players[bankCandidates[0]]["bank"] = True
+            contextGame["bank"] = bankCandidates[0]
+
+        # Si no hay candidatos a banca miramos si la banca no tiene puntos y la cambiamos por el siguiente
+        # en la lista de prioridad.
+        elif players[contextGame["bank"]]["points"] == 0:
+            players[contextGame["bank"]]["bank"] = False
+            players[contextGame["players"][len(contextGame["players"]) - 1]]["bank"] = True
+            contextGame["bank"] = contextGame["players"][len(contextGame["players"]) - 1]
 
         # Ordenamos los jugadores
         for pas in range(len(contextGame["players"]) - 1):
@@ -238,15 +303,3 @@ def round_loop():
             # Si la lista ya esta ordena se rompe el bucle
             if listIsOrdered:
                 break
-
-        # Prints para hacer pruebas de funcionamiento
-        print("Ronda: " + str(contextGame["round"]) + "\n")
-        for player in contextGame["players"]:
-            print(player + " " + str(players[player]["bank"]) + ":")
-            print("Cartas en mano:", players[player]["cards"])
-            print("Bet: " + str(players[player]["bet"]))
-            print("Round points: " + str(players[player]["round_points"]))
-            print("Player points: " + str(players[player]["points"]))
-            print("ProbToPass: " + str(probToPass(players[player]["round_points"], contextGame["deck"], deck)) + "\n")
-        input("Pulsa la intro")
-        contextGame["round"] += 1
