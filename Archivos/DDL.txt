@@ -15,7 +15,7 @@ deck_name VARCHAR(25),
 PRIMARY KEY (deck_id)
 );
 CREATE TABLE cardgame (
-cardgame_id INT,
+cardgame_id INT AUTO_INCREMENT,
 players TINYINT,
 rounds TINYINT,
 start_hour DATETIME,
