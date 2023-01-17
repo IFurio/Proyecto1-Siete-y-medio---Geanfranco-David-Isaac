@@ -4,37 +4,44 @@ from les_meves_funcions.funcions_joc import *
 from pyfiglet import figlet_format
 
 
-# menus
-# Headers
-hr00 = "*" * 100 + "\n" + figlet_format("Seven and half", font="starwars") + "*" * 100 + "\n\n"
-# Options
-mn00 = "1)Add/Remove/Show Players\n2)Settings\n3)Play Game\n4)Ranking\n5)Reports\n6)Exit"
-inputOptText = "\nChoose an option:\n"
-
 # Variables
 leave = False
 
 # Loops
 while not leave:
-    print()
-    opt = getOpt(hr00, mn00, "\nChoose an option:\n", [1, 2, 3, 4, 5, 6], [], {})
+    opt = getOpt(menus["00"]["header"],
+                 menus["00"]["textOpts"],
+                 menus["00"]["inputOptText"],
+                 menus["00"]["rangeList"], {}, [])
 
     if opt == 1:
-        print("Add/Remove/Show Players")
+        opt = getOpt(menus["01"]["header"],
+                     menus["01"]["textOpts"],
+                     menus["01"]["inputOptText"],
+                     menus["01"]["rangeList"], {}, [])
 
     elif opt == 2:
-        print("Settings")
+        opt = getOpt(menus["02"]["header"],
+                     menus["02"]["textOpts"],
+                     menus["02"]["inputOptText"],
+                     menus["02"]["rangeList"], {}, [])
 
     elif opt == 3:
         the_game_starts = check_settings()
         if the_game_starts:
             print("Play game")
-
+            round_loop()
     elif opt == 4:
-        print("Ranking")
+        opt = getOpt(menus["04"]["header"],
+                     menus["04"]["textOpts"],
+                     menus["04"]["inputOptText"],
+                     menus["04"]["rangeList"], {}, [])
 
     elif opt == 5:
-        print("Reports")
+        opt = getOpt(menus["05"]["header"],
+                     menus["05"]["textOpts"],
+                     menus["05"]["inputOptText"],
+                     menus["05"]["rangeList"], {}, [])
 
     elif opt == 6:
         leave = True

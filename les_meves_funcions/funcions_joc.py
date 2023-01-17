@@ -245,7 +245,9 @@ def round_loop():
 
         # Loop para que cada jugador juegue su turno
         for player in contextGame["players"]:
-
+            card = drawCard(deck)
+            players[player]["cards"].append(card)
+            players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
             # Aqui juegan los jugadores normales
             if not players[player]["bank"]:
                 while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
