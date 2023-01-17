@@ -121,7 +121,7 @@ players = {
 menus = {
     "00": {
         "header": "*" * 95 + "\n" +
-                  figlet_format(" " * 11 + "Seven and half", font="doom").center(100) +
+                  figlet_format(" " * 11 + "Seven and half", font="doom") +
                   "*" * 95 + "\n\n",
         "textOpts": "1)Add/Remove/Show Players\n2)Settings\n3)Play Game\n4)Ranking\n5)Reports\n6)Exit",
         "inputOptText": "\nChoose an option:\n",
@@ -131,19 +131,57 @@ menus = {
     },
     "01": {
         "header": "*" * 95 + "\n" +
-                  figlet_format(" " * 11 + "Players DB", font="doom").center(100) +
+                  figlet_format(" " * 12 + "P l a y e r s  D B", font="doom") +
                   "*" * 95 + "\n\n",
         "textOpts": "1)New Human Player\n2)New Boot\n3)Show/Remove Players\n4)Go Back",
-        "inputOptText": "\nOption:",
+        "inputOptText": "Option: ",
         "rangeList": [1, 2, 3, 4],
         "dict": {},
         "excep": []
     },
     "02": {
-        "header": "",
-        "textOpts": "",
-        "inputOptText": "",
-        "rangeList": [],
+        "header": "*" * 87 + "\n" +
+                  figlet_format(" " + "S e tt i n g s", font="colossal") +
+                  "*" * 87 + "\n\n",
+        "textOpts": "1)Set Game Players\n2)Set Card's Deck\n3)Set Max Rounds (Default 5 Rounds)\n4)Go Back",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3, 4],
+        "dict": {},
+        "excep": []
+    },
+    "04": {
+        "header": "*" * 95 + "\n" +
+                  figlet_format(" " * 24 + "Ra n k i ng", font="doom") +
+                  "*" * 95 + "\n\n",
+        "textOpts": "1)Players With More Earnings\n"
+                    "2)Players With More Games Played\n"
+                    "3)Players With More Minutes Played\n"
+                    "4)Go Back",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3, 4],
+        "dict": {},
+        "excep": []
+    },
+    "05": {
+        "header": "*" * 95 + "\n" +
+                  figlet_format(" " * 24 + "R e p o r t s", font="doom") +
+                  "*" * 95 + "\n\n",
+        "textOpts": "1)  Initial card more repeated by each user,\n"                                                      
+                    "only users who have played a minimum of 3 games.\n"
+                    "2)  Player who makes the highest bet per game,\n"                                                    
+                    "find the round with the highest bet.\n"
+                    "3)  Player who makes the lowest bet per game.\n"
+                    "4)  Percentage of rounds won per player in each game\n"                                              
+                    "(%), as well as their average bet for the game.\n"
+                    "5)  List of games won by Bots.\n"
+                    "6)  Rounds won by the bank in each game.\n"
+                    "7)  Number of users have been the bank in each game.\n"
+                    "8)  Average bet per game.\n"
+                    "9)  Average bet of the first round of each game.\n"
+                    "10) Average bet of the last round of each game.\n"
+                    "11)Go Back",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         "dict": {},
         "excep": []
     }

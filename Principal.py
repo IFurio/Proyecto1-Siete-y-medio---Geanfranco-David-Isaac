@@ -32,10 +32,16 @@ while not leave:
             print("Play game")
             round_loop()
     elif opt == 4:
-        print("Ranking")
+        opt = getOpt(menus["04"]["header"],
+                     menus["04"]["textOpts"],
+                     menus["04"]["inputOptText"],
+                     menus["04"]["rangeList"], {}, [])
 
     elif opt == 5:
-        print("Reports")
+        opt = getOpt(menus["05"]["header"],
+                     menus["05"]["textOpts"],
+                     menus["05"]["inputOptText"],
+                     menus["05"]["rangeList"], {}, [])
 
     elif opt == 6:
         leave = True
