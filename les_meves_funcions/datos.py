@@ -1,3 +1,7 @@
+# Imports
+from pyfiglet import figlet_format
+
+
 cartas = {
     "baraja_esp": {
         "O01": {"literal": "As de Oros", "value": 1, "priority": 4, "realValue": 1},
@@ -114,3 +118,33 @@ players = {
         "type": 50, "bet": 5, "points": 0, "cards": [], "round_points": 0}
 }
 
+menus = {
+    "00": {
+        "header": "*" * 95 + "\n" +
+                  figlet_format(" " * 11 + "Seven and half", font="doom").center(100) +
+                  "*" * 95 + "\n\n",
+        "textOpts": "1)Add/Remove/Show Players\n2)Settings\n3)Play Game\n4)Ranking\n5)Reports\n6)Exit",
+        "inputOptText": "\nChoose an option:\n",
+        "rangeList": [1, 2, 3, 4, 5, 6],
+        "dict": {},
+        "excep": []
+    },
+    "01": {
+        "header": "*" * 95 + "\n" +
+                  figlet_format(" " * 11 + "Players DB", font="doom").center(100) +
+                  "*" * 95 + "\n\n",
+        "textOpts": "1)New Human Player\n2)New Boot\n3)Show/Remove Players\n4)Go Back",
+        "inputOptText": "\nOption:",
+        "rangeList": [1, 2, 3, 4],
+        "dict": {},
+        "excep": []
+    },
+    "02": {
+        "header": "",
+        "textOpts": "",
+        "inputOptText": "",
+        "rangeList": [],
+        "dict": {},
+        "excep": []
+    }
+}
