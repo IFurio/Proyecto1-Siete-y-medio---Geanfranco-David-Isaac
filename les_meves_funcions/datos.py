@@ -2,8 +2,8 @@
 from pyfiglet import figlet_format
 
 
-cartas = {
-    "baraja_esp": {
+cards = {
+    "ESP": {
         "O01": {"literal": "As de Oros", "value": 1, "priority": 4, "realValue": 1},
         "O02": {"literal": "Dos de Oros", "value": 2, "priority": 4, "realValue": 2},
         "O03": {"literal": "Tres de Oros", "value": 3, "priority": 4, "realValue": 3},
@@ -49,7 +49,7 @@ cartas = {
         "B12": {"literal": "Rey de Bastos", "value": 12, "priority": 1, "realValue": 0.5},
     },
 
-    "baraja_poker": {
+    "POK": {
         "T01": {"literal": "As de Trebol", "value": 1, "priority": 1, "realValue": 1},
         "T02": {"literal": "Dos de Trebol", "value": 2, "priority": 1, "realValue": 2},
         "T03": {"literal": "Tres de Trebol", "value": 3, "priority": 1, "realValue": 3},
@@ -57,8 +57,6 @@ cartas = {
         "T05": {"literal": "Cinco de Trebol", "value": 5, "priority": 1, "realValue": 5},
         "T06": {"literal": "Seis de Trebol", "value": 6, "priority": 1, "realValue": 6},
         "T07": {"literal": "Siete de Trebol", "value": 7, "priority": 1, "realValue": 7},
-        "T08": {"literal": "Ocho de Trebol", "value": 8, "priority": 1, "realValue": 0.5},
-        "T09": {"literal": "Nueve de Trebol", "value": 9, "priority": 1, "realValue": 0.5},
         "T0J": {"literal": "Jota de Trebol", "value": 10, "priority": 1, "realValue": 0.5},
         "T0Q": {"literal": "Dama de Trebol", "value": 11, "priority": 1, "realValue": 0.5},
         "T0K": {"literal": "Rey de Trebol", "value": 12, "priority": 1, "realValue": 0.5},
@@ -70,8 +68,6 @@ cartas = {
         "P05": {"literal": "Cinco de Picas", "value": 5, "priority": 2, "realValue": 5},
         "P06": {"literal": "Seis de Picas", "value": 6, "priority": 2, "realValue": 6},
         "P07": {"literal": "Siete de Picas", "value": 7, "priority": 2, "realValue": 7},
-        "P08": {"literal": "Ocho de Picas", "value": 8, "priority": 1, "realValue": 0.5},
-        "P09": {"literal": "Nueve de Picas", "value": 9, "priority": 1, "realValue": 0.5},
         "P0J": {"literal": "Jota de Picas", "value": 10, "priority": 2, "realValue": 0.5},
         "P0Q": {"literal": "Dama de Picas", "value": 11, "priority": 2, "realValue": 0.5},
         "P0K": {"literal": "Rey de Picas", "value": 12, "priority": 2, "realValue": 0.5},
@@ -83,8 +79,6 @@ cartas = {
         "H05": {"literal": "Cinco de Corazones", "value": 5, "priority": 3, "realValue": 5},
         "H06": {"literal": "Seis de Corazones", "value": 6, "priority": 3, "realValue": 6},
         "H07": {"literal": "Siete de Corazones", "value": 7, "priority": 3, "realValue": 7},
-        "H08": {"literal": "Ocho de Corazones", "value": 8, "priority": 3, "realValue": 0.5},
-        "H09": {"literal": "Nueve de Corazones", "value": 9, "priority": 3, "realValue": 0.5},
         "H0J": {"literal": "Jota de Corazones", "value": 10, "priority": 3, "realValue": 0.5},
         "H0Q": {"literal": "Dama de Corazones", "value": 11, "priority": 3, "realValue": 0.5},
         "H0K": {"literal": "Rey de Corazones", "value": 12, "priority": 3, "realValue": 0.5},
@@ -96,15 +90,13 @@ cartas = {
         "D05": {"literal": "Cinco de Diamantes", "value": 5, "priority": 4, "realValue": 5},
         "D06": {"literal": "Seis de Diamantes", "value": 6, "priority": 4, "realValue": 6},
         "D07": {"literal": "Siete de Diamantes", "value": 7, "priority": 4, "realValue": 7},
-        "D08": {"literal": "Ocho de Diamantes", "value": 8, "priority": 4, "realValue": 0.5},
-        "D09": {"literal": "Nueve de Diamantes", "value": 9, "priority": 4, "realValue": 0.5},
         "D0J": {"literal": "Jota de Diamantes", "value": 10, "priority": 4, "realValue": 0.5},
         "D0Q": {"literal": "Dama de Diamantes", "value": 11, "priority": 4, "realValue": 0.5},
         "D0K": {"literal": "Rey de Diamantes", "value": 12, "priority": 4, "realValue": 0.5}
     }
 }
 
-contextGame = {"players": [], "round": 0, "maxRounds": 0, "deck": "baraja_esp", "bank": ""}
+contextGame = {"players": [], "round": 0, "maxRounds": 0, "deck": "ESP", "bank": ""}
 
 players = {
     "32324323A": {
@@ -117,14 +109,21 @@ players = {
         "name": "David", "human": False, "bank": False, "initial_card": "", "priority": 0,
         "type": 50, "bet": 5, "points": 0, "cards": [], "round_points": 0}
 }
-letrasDni = ("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", " J", "Z", "S", "Q", "V", "H", "L","C", "K", "E")
+
+letrasDni = ("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
+             "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E")
 
 menus = {
     "00": {
         "header": "*" * 95 + "\n" +
                   figlet_format(" " * 11 + "Seven and half", font="doom") +
                   "*" * 95 + "\n\n",
-        "textOpts": "1)Add/Remove/Show Players\n2)Settings\n3)Play Game\n4)Ranking\n5)Reports\n6)Exit",
+        "textOpts": "1)Add/Remove/Show Players\n"
+                    "2)Settings\n"
+                    "3)Play Game\n"
+                    "4)Ranking\n"
+                    "5)Reports\n"
+                    "6)Exit",
         "inputOptText": "\nChoose an option:\n",
         "rangeList": [1, 2, 3, 4, 5, 6],
         "dict": {},
@@ -134,7 +133,10 @@ menus = {
         "header": "*" * 95 + "\n" +
                   figlet_format(" " * 12 + "P l a y e r s  D B", font="doom") +
                   "*" * 95 + "\n\n",
-        "textOpts": "1)New Human Player\n2)New Boot\n3)Show/Remove Players\n4)Go Back",
+        "textOpts": "1)New Human Player\n"
+                    "2)New Boot\n"
+                    "3)Show/Remove Players\n"
+                    "4)Go Back",
         "inputOptText": "Option: ",
         "rangeList": [1, 2, 3, 4],
         "dict": {},
@@ -144,7 +146,10 @@ menus = {
         "header": "*" * 87 + "\n" +
                   figlet_format(" " + "S e tt i n g s", font="colossal") +
                   "*" * 87 + "\n\n",
-        "textOpts": "1)Set Game Players\n2)Set Card's Deck\n3)Set Max Rounds (Default 5 Rounds)\n4)Go Back",
+        "textOpts": "1)Set Game Players\n"
+                    "2)Set Card's Deck\n"
+                    "3)Set Max Rounds (Default 5 Rounds)\n"
+                    "4)Go Back",
         "inputOptText": "Option: ",
         "rangeList": [1, 2, 3, 4],
         "dict": {},
