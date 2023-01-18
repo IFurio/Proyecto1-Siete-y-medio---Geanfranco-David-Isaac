@@ -1,6 +1,6 @@
 # Imports
 from pyfiglet import figlet_format
-
+import random
 
 cards = {
     "ESP": {
@@ -110,8 +110,8 @@ players = {
         "type": 50, "bet": 5, "points": 0, "cards": [], "round_points": 0}
 }
 
-letrasDni = ("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
-             "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E")
+letrasDni = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
+             "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"]
 
 menus = {
     "00": {

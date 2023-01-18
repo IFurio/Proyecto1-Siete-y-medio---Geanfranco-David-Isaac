@@ -56,7 +56,8 @@ def new_nif(human):
             dni = ""
             for i in range(1,9):
                 dni += str(random.randint(1,9))
-            dni += letrasDni[random.randint(len(0,letrasDni))]
+            dni = dni + letrasDni[random.randrange(0,len(letrasDni))]
+            break
     return dni.upper()
 
 
