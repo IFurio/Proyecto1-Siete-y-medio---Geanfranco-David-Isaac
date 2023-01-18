@@ -190,5 +190,18 @@ menus = {
         "rangeList": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         "dict": {},
         "excep": []
-    }
+    },
+    "06": {
+            "header": "*" * 95 + "\n" +
+                      figlet_format(" " * 24 + "New Human Player", font="doom") +
+                      "*" * 95 + "\n\n",
+            "textOpts": "Select your profile:\n"
+                        "1)Cautious\n"
+                        "2)Moderated\n"
+                        "3)Bold",
+            "inputOptText": "Option: ",
+            "rangeList": [1, 2, 3, 4],
+            "dict": {},
+            "excep": []
+        }
 }
