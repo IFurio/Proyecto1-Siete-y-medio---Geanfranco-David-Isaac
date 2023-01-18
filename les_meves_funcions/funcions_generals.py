@@ -1,10 +1,14 @@
+#Imports
 import les_meves_funcions.datos
-from  funcions_consultesDB import *
+from les_meves_funcions.funcions_consultesDB import *
 import les_meves_funcions
+
+
 def logToFile(text):
     f = open("./logfileSevenAndHalf.txt", "a")
     f.write(text + "\n")
     f.close()
+
 
 def new_nif():
     # Comprobación del número del DNI al crear un nuevo jugador
@@ -34,7 +38,8 @@ def new_nif():
         except IndexError:
             print("Incorrect format.")
     return dni.upper()
-new_nif()
+
+
 def newPlayer():
     while True:
         name = input("Name:")
@@ -48,6 +53,5 @@ def newPlayer():
         else:
             break
         NIF = input("")
-    new_nif()
+    dni = new_nif()
     return
-newPlayer()
