@@ -124,6 +124,3 @@ def newPlayer_boot():
         print("Player saved")
     else:
         print("Player information discarded")
-
-newPlayer_human()
-#90631839V
