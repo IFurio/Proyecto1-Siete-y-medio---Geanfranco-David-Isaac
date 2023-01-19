@@ -1,5 +1,7 @@
 # Imports
 import pymysql
+from les_meves_funcions.datos import *
+from les_meves_funcions.funcions_joc import *
 import pymysql.cursors
 
 
@@ -49,7 +51,7 @@ def InputBBDD(query):
 #query = "'insert into player_game_round values ( "{}",{},"{}",{},{},{},{},{})'".format(cardgame_id,round_num,player_id,player_game_round[round_num][player_id]["is_bank"],player_game_round[round_num][player_id]["bet_points"] , player_game_round[round_num][player_id]["cards_value"],player_game_round[round_num][player_id]["starting_round_points"],player_game_round[round_num][player_id]["ending_round_points"])
 
 
-def fetchPlayers():
+def fetchPlayers(type="str"):
     humanList = []
     bootList = []
 
@@ -57,12 +59,13 @@ def fetchPlayers():
 
     for user in fetch:
         user = list(user)
-        if user[2] == 30:
-            user[2] = "Cautious"
-        if user[2] == 40:
-            user[2] = "Moderated"
-        if user[2] == 50:
-            user[2] = "Bold"
+        if type == "str":
+            if user[2] == 30:
+                user[2] = "Cautious"
+            if user[2] == 40:
+                user[2] = "Moderated"
+            if user[2] == 50:
+                user[2] = "Bold"
 
         if user[3]:
             humanList.append(user)
@@ -80,3 +83,36 @@ def fetchCards(deck):
         cardsDict[card[0]] = {"literal": card[1], "value": card[4], "priority": card[3], "realValue": card[2]}
 
     return cardsDict
+
+
+def addDataToCardGame(moment):
+    ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
+    if moment == "beginning":
+        cardgame[ultimoID + 1] = {"playersNum": len(contextGame["players"]),
+                                  "startHour": Set_GameTime(), "deckID": contextGame["deck"]}
+    else:
+        cardgame[ultimoID + 1]["endHour"] = Set_GameTime()
+        cardgame[ultimoID + 1]["totalRounds"] = contextGame["rounds"]
+
+
+def addDataToPlayersGame(moment):
+    ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
+    if moment == "beginning":
+        for player in contextGame["players"]:
+            player_game[ultimoID + 1][player] = {"initial_card": players[player]["initial_card"],
+                                                 "initial_points": players[player]["points"]}
+    else:
+        for player in contextGame["players"]:
+            player_game[ultimoID + 1][player]["final_points"] = players[player]["points"]
+
+
+def addDataToPlayerGameRound(moment):
+    ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
+    if moment == "beginning":
+        player_game_round[ultimoID + 1] = {contextGame["round"]: {}}
+        for player in contextGame["players"]:
+            player_game_round[ultimoID + 1][contextGame["round"]][player] = {"bank": players[player]["bank"],
+                                                                             "bet": players[player]["bet"],
+                                                                             "i_points": contextGame[player]["points"]}
+    else:
+        for player in contextGame["players"]:

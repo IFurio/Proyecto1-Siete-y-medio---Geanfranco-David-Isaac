@@ -23,7 +23,11 @@ while not leave:
     elif opt == 3:
         the_game_starts = check_settings()
         if the_game_starts:
+            SetRound_setting()
             round_loop()
+            players = {}
+            contextGame["players"] = []
+            contextGame["deck"] = ""
 
     elif opt == 4:
         menu04()

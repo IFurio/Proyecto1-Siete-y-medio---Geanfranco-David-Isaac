@@ -100,11 +100,8 @@ def Set_InitialPoints():
 # Usando el modulo datetime (importado) pedimos la hora local actual
 def Set_GameTime():
     hora_local = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    #######################################################################################################
-    ####################GUARDAR HORA EN EL DICCIONARIO DE LA PARTIDA ######################################
-    #######################################################################################################
-    print(hora_local)
-    return
+
+    return hora_local
 
 
 # Definir la prioridad de cada jugador antes de comenzar la partiad.
@@ -114,6 +111,7 @@ def SetPriority():
         players[player]["initial_card"] = drawCard(deck)
     orderPlayers(contextGame["deck"])
     players[contextGame["players"][-1]]["bank"] = True
+    contextGame["bank"] = contextGame["players"][-1]
     return
 
 
@@ -134,7 +132,6 @@ def checkMinimun2PlayerWithPoints():
 # Funcion para apuestas
 def setPlayersBet(bank):
     for player in contextGame["players"]:
-
         # Si el jugador no es banca se hacen apuestas
         if player != bank:
 
@@ -213,7 +210,7 @@ def probToPass(points, deckName, deckList):
     # Este count sirve para saber cuantas cartas hacen que te pases de 7 y medio
     count = 0
     for card in deckList:
-        if contextGame["deck"]["card"]["realValue"] + points > 7.5:
+        if contextGame["deck"][card]["realValue"] + points > 7.5:
             count += 1
 
     # Cuando ya tenemos todas las cartas que nos hacen pasarnos hacemos el calculo y lo devolvemos

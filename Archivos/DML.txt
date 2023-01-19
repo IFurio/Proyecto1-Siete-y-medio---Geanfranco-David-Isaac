@@ -1,0 +1,19 @@
+# For para insertar las cartas en la tabla
+##########################################
+#   dick = {"ESP": "Spanish Deck", "POK": "Poker Deck"}
+#
+#    for deck in cards.keys():
+#        cursor.execute(
+#            "insert into deck values ( '{}', '{}' )".format(deck, dick[deck])
+#        )
+#        for card in cards[deck].keys():
+#            cursor.execute(
+#                "insert into card values ( '{}', '{}', {}, {}, {}, '{}' )".format(card,
+#                                                                                  cards[deck][card]["literal"],
+#                                                                                  cards[deck][card]["realValue"],
+#                                                                                  cards[deck][card]["priority"],
+#                                                                                  cards[deck][card]["value"],
+#                                                                                  deck)
+#            )
+#    conn.commit()
+##########################################
