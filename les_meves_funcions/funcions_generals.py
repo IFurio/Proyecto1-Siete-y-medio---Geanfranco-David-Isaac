@@ -4,12 +4,6 @@ from les_meves_funcions.funcions_consultesDB import *
 import les_meves_funcions
 
 
-def logToFile(text):
-    f = open("./logfileSevenAndHalf.txt", "a")
-    f.write(text + "\n")
-    f.close()
-
-
 def new_nif():
     # Comprobación del número del DNI al crear un nuevo jugador
     resultado = SelectBBDD("Select player_id from player")

@@ -10,7 +10,7 @@ player_game = {}
 
 player_game_round = {}
 
-contextGame = {"players": [], "round": 0, "maxRounds": 0, "deck": "", "bank": ""}
+contextGame = {"players": [], "round": 1, "maxRounds": 0, "deck": "", "bank": ""}
 
 letrasDni = ("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
              "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E")

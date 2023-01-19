@@ -2,7 +2,6 @@
 from les_meves_funcions.funcions_menu import *
 from les_meves_funcions.funcions_consultesDB import *
 from les_meves_funcions.funcions_joc import *
-from pyfiglet import figlet_format
 
 
 # Variables
@@ -37,7 +36,7 @@ while not leave:
             players = {}
             contextGame["players"] = []
             contextGame["deck"] = ""
-            contextGame["round"] = 0
+            contextGame["round"] = 1
             contextGame["maxRounds"] = 0
 
     elif opt == 4:

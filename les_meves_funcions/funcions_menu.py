@@ -40,7 +40,6 @@ def getOpt(header, textOpts, inputOptText, rangeList, dictionary, exceptions):
 
             # Si no encuentra la opt en ninguno de los parametros anteriores imprime un mensaje de error
             else:
-                logToFile("The introduced value were wrong")
                 print("Invalid option".center(100, "="))
                 input("Enter to continue".center(100))
 

@@ -6,9 +6,6 @@ from datetime import *
 import random
 
 
-
-
-
 # Funcion de comprovaciones
 def check_settings():
     try:
@@ -21,7 +18,7 @@ def check_settings():
             addDataToCardGame("beginning")
             contextGame["deck"] = fetchCards(contextGame["deck"])
 
-        if contextGame["maxRounds"] < 5:
+        if contextGame["maxRounds"] == 0:
             contextGame["maxRounds"] = 5
 
     except ValueError as fail:
@@ -229,7 +226,7 @@ def playersWinningBank(bank):
 
 # Funcion loop de las rondas
 def round_loop():
-    while checkMinimun2PlayerInGame() and contextGame["round"] < contextGame["maxRounds"]:
+    while checkMinimun2PlayerInGame() and contextGame["round"] <= contextGame["maxRounds"]:
         # Se devuelven las cartas al mazo, se ponen los puntos a cero y se resetean los candidatos a la banca
         bankCandidates = []
         for player in contextGame["players"]:
