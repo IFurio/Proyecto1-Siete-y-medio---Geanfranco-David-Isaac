@@ -1,5 +1,6 @@
 # Imports
 import pymysql
+from datetime import *
 from les_meves_funcions.datos import *
 from les_meves_funcions.funcions_joc import *
 import pymysql.cursors
@@ -9,6 +10,10 @@ import pymysql.cursors
 # prueba = "Select player_id from player"
 # mysql4 = 'insert into countries (country_id, country_name, region_id) Values ("{}","{}",{})'.format(dicc["A"],dicc["B"],dicc["C"])
 
+# Usando el modulo datetime (importado) pedimos la hora local actual
+def Set_GameTime():
+    hora_local = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return hora_local
 
 def SelectBBDD(query):
     conn = pymysql.connect(
@@ -95,12 +100,13 @@ def addDataToCardGame(moment):
         cardgame[ultimoID + 1]["totalRounds"] = contextGame["rounds"]
 
 
-def addDataToPlayersGame(moment):
+def addDataToPlayerGame(moment):
     ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
     if moment == "beginning":
         for player in contextGame["players"]:
             player_game[ultimoID + 1][player] = {"initial_card": players[player]["initial_card"],
-                                                 "initial_points": players[player]["points"]}
+                                                 "initial_points": players[player]["points"],
+                                                 "final_points": 0}
     else:
         for player in contextGame["players"]:
             player_game[ultimoID + 1][player]["final_points"] = players[player]["points"]
@@ -113,6 +119,8 @@ def addDataToPlayerGameRound(moment):
         for player in contextGame["players"]:
             player_game_round[ultimoID + 1][contextGame["round"]][player] = {"bank": players[player]["bank"],
                                                                              "bet": players[player]["bet"],
-                                                                             "i_points": contextGame[player]["points"]}
+                                                                             "initial_points": players[player]["points"]}
     else:
         for player in contextGame["players"]:
+            player_game_round[ultimoID + 1][contextGame["round"]][player]["cards_value"] = players[player]["round_points"]
+            player_game_round[ultimoID + 1][contextGame["round"]][player]["final_points"] = players[player]["points"]

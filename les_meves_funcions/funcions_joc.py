@@ -1,8 +1,12 @@
 # Imports
+from les_meves_funcions.funcions_consultesDB import *
 from les_meves_funcions.funcions_menu import *
 from les_meves_funcions.datos import *
 from datetime import *
 import random
+
+
+
 
 
 # Funcion de comprovaciones
@@ -14,6 +18,7 @@ def check_settings():
         if contextGame["deck"] == "":
             raise ValueError("Select a card deck to start the game!")
         else:
+            addDataToCardGame("beginning")
             contextGame["deck"] = fetchCards(contextGame["deck"])
 
         if contextGame["maxRounds"] < 5:
@@ -95,13 +100,6 @@ def Set_InitialPoints():
     for player in contextGame["players"]:
         players[player]["points"] = 20
     return
-
-
-# Usando el modulo datetime (importado) pedimos la hora local actual
-def Set_GameTime():
-    hora_local = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-    return hora_local
 
 
 # Definir la prioridad de cada jugador antes de comenzar la partiad.
@@ -238,6 +236,7 @@ def round_loop():
             players[player]["cards"] = []
             players[player]["round_points"] = 0
         deck = list(contextGame["deck"].keys())
+        addDataToPlayerGameRound("beginning")
 
         # Se hacen las apuestas
         setPlayersBet(contextGame["bank"])
@@ -292,6 +291,7 @@ def round_loop():
         pointsDistribution(contextGame["bank"], bankCandidates)
 
         # Hueco para insert de ronda
+        addDataToPlayerGameRound("")
 
         # Prints para hacer pruebas de funcionamiento
         print("Ronda: " + str(contextGame["round"]) + "\n")

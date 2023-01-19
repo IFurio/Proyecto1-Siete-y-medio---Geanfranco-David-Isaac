@@ -1,5 +1,6 @@
 # Imports
 from les_meves_funcions.funcions_menu import *
+from les_meves_funcions.funcions_consultesDB import *
 from les_meves_funcions.funcions_joc import *
 from pyfiglet import figlet_format
 
@@ -24,10 +25,20 @@ while not leave:
         the_game_starts = check_settings()
         if the_game_starts:
             SetRound_setting()
+            addDataToPlayerGame("beginning")
             round_loop()
+            addDataToCardGame("")
+            addDataToPlayerGame("")
+
+            print(cardgame)
+            print(player_game)
+            print(player_game_round)
+
             players = {}
             contextGame["players"] = []
             contextGame["deck"] = ""
+            contextGame["round"] = 0
+            contextGame["maxRounds"] = 0
 
     elif opt == 4:
         menu04()
