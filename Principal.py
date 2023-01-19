@@ -1,8 +1,6 @@
 # Imports
-from les_meves_funcions.funcions_menu import *
 from les_meves_funcions.funcions_joc import *
 from les_meves_funcions.funcions_menu import *
-from pyfiglet import figlet_format
 
 
 # Variables

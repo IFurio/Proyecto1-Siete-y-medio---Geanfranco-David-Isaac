@@ -2,12 +2,12 @@
 import random
 from les_meves_funcions.datos import *
 from les_meves_funcions.funcions_consultesDB import *
-from les_meves_funcions.funcions_menu import *
+import les_meves_funcions.funcions_menu
 
 
 def new_name():
     while True:
-        name = input("Name:")
+        name = input("Name: ")
         try:
             if name == "":
                 raise ValueError("Name cannot be empty")
@@ -66,7 +66,7 @@ def save_player(name, dni, profile, human_bool):
         name_prof = "Moderated"
     elif profile == 50:
         name_prof = "Bold"
-    print("*" * 95 + "\n" + figlet_format(" " * 24 + "New Human Player", font="doom") + "*" * 95 + "\n\n"+
+    print("*" * 95 + "\n" + figlet_format(" " * 24 + "New Player", font="doom") + "*" * 95 + "\n\n"+
           "Name: " + name + "\n" + "DNI: " + dni + "\n" + "Profile: " + name_prof + "\n")
     save = input("Save player? Y/N: ")
     while True:
@@ -80,7 +80,7 @@ def save_player(name, dni, profile, human_bool):
 
 def menu06():
     while True:
-        opt = getOpt(menus["06"]["header"],
+        opt = les_meves_funcions.funcions_menu.getOpt(menus["06"]["header"],
                      menus["06"]["textOpts"],
                      menus["06"]["inputOptText"],
                      menus["06"]["rangeList"], {}, [])
@@ -97,10 +97,11 @@ def menu06():
             break
 def newPlayer_human():
     print("*" * 95 + "\n" +
-          figlet_format(" " * 24 + "New Human Player", font="doom") +
+          figlet_format(" " * 24 + "New Player", font="doom") +
           "*" * 95 + "\n")
     name = new_name()
     dni = new_nif(1)
+    print("\n","*"*95,"\nNombre: ",name,"\nDNI: ",dni)
     profile = player_profile()
     save = save_player(name, dni, profile, 1)
     if save:
@@ -108,14 +109,15 @@ def newPlayer_human():
         InputBBDD(query)
         print("Player saved")
     else:
-        print("Player information discarded")
+        return
 
 def newPlayer_boot():
     print("*" * 95 + "\n" +
-          figlet_format(" " * 24 + "New Human Player", font="doom") +
+          figlet_format(" " * 24 + "New Player", font="doom") +
           "*" * 95 + "\n")
     name = new_name()
     dni = new_nif(0)
+    print("\n","*"*95,"\nNombre: ",name,"\nDNI: ",dni)
     profile = player_profile()
     save = save_player(name, dni, profile, 0)
     if save:
@@ -123,4 +125,4 @@ def newPlayer_boot():
         InputBBDD(query)
         print("Player saved")
     else:
-        print("Player information discarded")
+        return

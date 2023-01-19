@@ -1,6 +1,6 @@
 # Imports
 from les_meves_funcions.datos import *
-
+from les_meves_funcions.funcions_generals import *
 
 # Funciones de menus
 def getOpt(header, textOpts, inputOptText, rangeList, dictionary, exceptions):
@@ -50,9 +50,9 @@ def menu01():
                      menus["01"]["inputOptText"],
                      menus["01"]["rangeList"], {}, [])
         if opt == 1:
-            print()
+            newPlayer_human()
         elif opt == 2:
-            print()
+            newPlayer_boot()
         elif opt == 3:
             humans, boots = fetchPlayers()
 
