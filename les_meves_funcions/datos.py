@@ -1,6 +1,6 @@
 # Imports
 from pyfiglet import figlet_format
-
+import random
 
 players = {}
 
@@ -12,8 +12,8 @@ player_game_round = {}
 
 contextGame = {"players": [], "round": 1, "maxRounds": 0, "deck": "", "bank": ""}
 
-letrasDni = ("T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
-             "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E")
+letrasDni = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
+             "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"]
 
 menus = {
     "00": {
@@ -92,5 +92,16 @@ menus = {
         "rangeList": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         "dict": {},
         "excep": []
-    }
+    },
+    "06": {
+            "header": "",
+            "textOpts": "Select your profile:\n"
+                        "1)Cautious\n"
+                        "2)Moderated\n"
+                        "3)Bold",
+            "inputOptText": "Option: ",
+            "rangeList": [1, 2, 3, 4],
+            "dict": {},
+            "excep": []
+        }
 }
