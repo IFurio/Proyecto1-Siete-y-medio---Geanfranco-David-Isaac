@@ -54,7 +54,26 @@ def menu01():
         elif opt == 2:
             print()
         elif opt == 3:
-            print()
+            humans, boots = fetchPlayers()
+
+            if len(humans) > len(boots):
+                lenght = len(humans)
+            else:
+                lenght = len(boots)
+
+            data = ""
+            for i in range(lenght):
+                if len(boots) - 1 < i:
+                    data += " " * 20 + "|| "
+                else:
+                    data += boots[i][0] + " " + boots[i][1] + " " + boots[i][2] + " || "
+                if len(humans) - 1 < i:
+                    data += " " * 20 + "\n"
+                else:
+                    data += humans[i][0] + " " + humans[i][1] + " " + humans[i][2] + "\n"
+
+            print(data)
+
         else:
             break
 
@@ -66,7 +85,44 @@ def menu02():
                      menus["02"]["inputOptText"],
                      menus["02"]["rangeList"], {}, [])
         if opt == 1:
-            contextGame["players"] = list(players.keys())
+            humans, boots = fetchPlayers()
+
+            if len(humans) > len(boots):
+                lenght = len(humans)
+            else:
+                lenght = len(boots)
+
+            for i in range(lenght):
+                if len(boots) - 1 >= i:
+                    if boots[i][2] == "Cautious":
+                        boots[i][2] = 30
+                    if boots[i][2] == "Moderated":
+                        boots[i][2] = 40
+                    if boots[i][2] == "Bold":
+                        boots[i][2] = 50
+
+                    players[boots[i][0]] = {"name": boots[i][1], "human": boots[i][3], "type": boots[i][2],
+                                            "bank": False, "initial_card": "", "priority": 0, "bet": 0, "points": 0,
+                                            "cards": [], "round_points": 0}
+
+                    contextGame["players"].append(boots[i][0])
+
+                if len(humans) - 1 >= i:
+                    if boots[i][2] == "Cautious":
+                        boots[i][2] = 30
+                    if boots[i][2] == "Moderated":
+                        boots[i][2] = 40
+                    if boots[i][2] == "Bold":
+                        boots[i][2] = 50
+
+                    players[humans[i][0]] = {"name": humans[i][1], "human": humans[i][3], "type": humans[i][2],
+                                             "bank": False, "initial_card": "", "priority": 0, "bet": 0, "points": 0,
+                                             "cards": [], "round_points": 0}
+
+                    contextGame["players"].append(humans[i][0])
+        # "32324323A": {
+        #    "name": "Pepe", "human": False, "bank": False, "initial_card": "", "priority": 0,
+        #    "type": 30, "bet": 3, "points": 0, "cards": [], "round_points": 0}
 
         elif opt == 2:
             opt = getOpt(menus["02"]["header"],
