@@ -62,20 +62,40 @@ def menu01():
             else:
                 lenght = len(boots)
 
-            data = ""
-            data += "*" * 95 + "\n" + "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "||".ljust(4) + \
+            data = "=" * 95 + "\n" + "Boots".rjust(24) + "||".center(46) + "Humans\n" + "*" * 95 + "\n" + \
+                   "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "||".ljust(4) + \
                     "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "\n" + "*" * 95 + "\n"
             for i in range(lenght):
                 if len(boots) - 1 < i:
-                    data += " " * 20 + "|| "
+                    data += " " * 46 + "||".ljust(4)
                 else:
                     data += boots[i][0].ljust(15) + boots[i][1].ljust(20) + boots[i][2].ljust(11) + "||".ljust(4)
                 if len(humans) - 1 < i:
-                    data += " " * 20 + "\n"
+                    data += " " * 46 + "\n"
                 else:
                     data += humans[i][0].ljust(15) + humans[i][1].ljust(20) + humans[i][2].ljust(11) + "\n"
 
-            print(data + "=" * 95)
+            players = humans + boots
+            dnis = ["quit"]
+
+            for user in players:
+                dnis.append("-" + user[0])
+
+            header = "*" * 95 + "\n" + figlet_format("".ljust(23) + "P l a y e r s", font="doom") + "*" * 95 + "\n" \
+                     + "Show or remove players".center(94)
+
+            opt = getOpt(header, data + "=" * 95, "Option ( -id to remove player, 'quit' to exit)\n", [], {}, dnis)
+
+            if opt != "quit":
+                opt = opt[1:]
+                answer = input("Do you want to remove " + opt + "?\nY/y = yes: ")
+                if answer == "y" or answer == "Y":
+                    query = "Delete from player where player_id = '{}'".format(opt)
+                    InputBBDD(query)
+                    print("Player has been removed!!!")
+                else:
+                    print("Player not removed!!!")
+                    input("Enter to continue")
 
         else:
             break
