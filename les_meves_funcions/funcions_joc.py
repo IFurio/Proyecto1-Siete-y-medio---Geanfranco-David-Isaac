@@ -13,6 +13,8 @@ def check_settings():
 
         if contextGame["deck"] == "":
             raise ValueError("Select a card deck to start the game!")
+        else:
+            contextGame["deck"] = fetchCards(contextGame["deck"])
 
         if contextGame["maxRounds"] < 5:
             contextGame["maxRounds"] = 5
@@ -56,7 +58,7 @@ def orderPlayers(deck):
         for i in range(len(contextGame["players"]) - 1 - pas):
             # Aqui se comprueba si la carta inicial del jugador i es mas alta que la de i + 1 y se cambia de puesto,
             # tambien se comprueba si el jugador i + 1 es banca para no hacer el cambio en ese caso
-            if cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
+            if contextGame["deck"][players[contextGame["players"][i]]["initial_card"]]["value"] > contextGame["deck"][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
                 changeBox = contextGame["players"][i]
                 contextGame["players"][i] = contextGame["players"][i + 1]
                 contextGame["players"][i + 1] = changeBox
@@ -64,8 +66,8 @@ def orderPlayers(deck):
 
             # Si los dos jugadores sacan la misma cifra se comprueban prioridades, tambien se vuelve a comprobar si
             # i + 1 es banca para no hacer el cambio.
-            elif cartas[deck][players[contextGame["players"][i]]["initial_card"]]["value"] == cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
-                if cartas[deck][players[contextGame["players"][i]]["initial_card"]]["priority"] > cartas[deck][players[contextGame["players"][i + 1]]["initial_card"]]["priority"]:
+            elif contextGame["deck"][players[contextGame["players"][i]]["initial_card"]]["value"] == contextGame["deck"][players[contextGame["players"][i + 1]]["initial_card"]]["value"]:
+                if contextGame["deck"][players[contextGame["players"][i]]["initial_card"]]["priority"] > contextGame["deck"][players[contextGame["players"][i + 1]]["initial_card"]]["priority"]:
                     changeBox = contextGame["players"][i]
                     contextGame["players"][i] = contextGame["players"][i + 1]
                     contextGame["players"][i + 1] = changeBox
@@ -91,13 +93,13 @@ def SetRound_setting():
 def Set_InitialPoints():
     # Accedemos a la lista de jugadores que van a participar en la partida y les ponemos los puntos iterando en la lista.
     for player in contextGame["players"]:
-        players[player]["points"]=20
+        players[player]["points"] = 20
     return
 
 
 # Usando el modulo datetime (importado) pedimos la hora local actual
 def Set_GameTime():
-    hora_local=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    hora_local = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     #######################################################################################################
     ####################GUARDAR HORA EN EL DICCIONARIO DE LA PARTIDA ######################################
     #######################################################################################################
@@ -107,7 +109,7 @@ def Set_GameTime():
 
 # Definir la prioridad de cada jugador antes de comenzar la partiad.
 def SetPriority():
-    deck = list(cartas[contextGame["deck"]].keys())
+    deck = list(contextGame["deck"].keys())
     for player in contextGame["players"]:
         players[player]["initial_card"] = drawCard(deck)
     orderPlayers(contextGame["deck"])
@@ -211,7 +213,7 @@ def probToPass(points, deckName, deckList):
     # Este count sirve para saber cuantas cartas hacen que te pases de 7 y medio
     count = 0
     for card in deckList:
-        if cartas[deckName][card]["realValue"] + points > 7.5:
+        if contextGame["deck"]["card"]["realValue"] + points > 7.5:
             count += 1
 
     # Cuando ya tenemos todas las cartas que nos hacen pasarnos hacemos el calculo y lo devolvemos
@@ -238,7 +240,7 @@ def round_loop():
         for player in contextGame["players"]:
             players[player]["cards"] = []
             players[player]["round_points"] = 0
-        deck = list(cartas[contextGame["deck"]].keys())
+        deck = list(contextGame["deck"].keys())
 
         # Se hacen las apuestas
         setPlayersBet(contextGame["bank"])
@@ -247,13 +249,13 @@ def round_loop():
         for player in contextGame["players"]:
             card = drawCard(deck)
             players[player]["cards"].append(card)
-            players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+            players[player]["round_points"] += contextGame["deck"][card]["realValue"]
             # Aqui juegan los jugadores normales
             if not players[player]["bank"]:
                 while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
                     card = drawCard(deck)
                     players[player]["cards"].append(card)
-                    players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+                    players[player]["round_points"] += contextGame["deck"][card]["realValue"]
 
                 # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
                 if players[player]["round_points"] > 7.5:
@@ -273,13 +275,13 @@ def round_loop():
                     elif players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
-                        players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+                        players[player]["round_points"] += contextGame["deck"][card]["realValue"]
 
                     # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
                     elif count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
-                        players[player]["round_points"] += cartas[contextGame["deck"]][card]["realValue"]
+                        players[player]["round_points"] += contextGame["deck"][card]["realValue"]
 
                     # En caso de que su nivel de resiesgo se pase se planta
                     else:

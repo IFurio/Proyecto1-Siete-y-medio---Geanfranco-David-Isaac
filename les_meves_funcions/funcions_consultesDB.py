@@ -70,3 +70,13 @@ def fetchPlayers():
             bootList.append(user)
 
     return humanList, bootList
+
+
+def fetchCards(deck):
+    cardsDict = {}
+
+    fetch = SelectBBDD("select * from card where deck_id = '{}'".format(deck))
+    for card in fetch:
+        cardsDict[card[0]] = {"literal": card[1], "value": card[4], "priority": card[3], "realValue": card[2]}
+
+    return cardsDict
