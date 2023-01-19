@@ -55,7 +55,26 @@ def menu01():
         elif opt == 2:
             print()
         elif opt == 3:
-            print()
+            humans, boots = fetchPlayers()
+
+            if len(humans) > len(boots):
+                lenght = len(humans)
+            else:
+                lenght = len(boots)
+
+            data = ""
+            for i in range(lenght):
+                if len(boots) - 1 < i:
+                    data += " " * 20 + "|| "
+                else:
+                    data += boots[i][0] + " " + boots[i][1] + " " + boots[i][2] + " || "
+                if len(humans) - 1 < i:
+                    data += " " * 20 + "\n"
+                else:
+                    data += humans[i][0] + " " + humans[i][1] + " " + humans[i][2] + "\n"
+
+            print(data)
+
         else:
             break
 
