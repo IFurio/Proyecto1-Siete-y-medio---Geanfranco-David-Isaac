@@ -1,6 +1,5 @@
 # Imports
 from pyfiglet import figlet_format
-import random
 
 players = {}
 

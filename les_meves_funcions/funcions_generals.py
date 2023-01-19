@@ -1,6 +1,5 @@
 #Imports
 import random
-from les_meves_funcions.datos import *
 from les_meves_funcions.funcions_consultesDB import *
 import les_meves_funcions.funcions_menu
 

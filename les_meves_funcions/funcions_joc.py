@@ -1,8 +1,6 @@
 # Imports
-from les_meves_funcions.funcions_consultesDB import *
 from les_meves_funcions.funcions_menu import *
 from les_meves_funcions.datos import *
-from datetime import *
 import random
 
 

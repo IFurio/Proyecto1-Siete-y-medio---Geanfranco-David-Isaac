@@ -1,6 +1,4 @@
 # Imports
-from les_meves_funcions.funcions_menu import *
-from les_meves_funcions.funcions_consultesDB import *
 from les_meves_funcions.funcions_joc import *
 from les_meves_funcions.funcions_menu import *
 

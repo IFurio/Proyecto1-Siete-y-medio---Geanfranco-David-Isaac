@@ -1,5 +1,4 @@
 # Imports
-from les_meves_funcions.datos import *
 from les_meves_funcions.funcions_generals import *
 
 # Funciones de menus
