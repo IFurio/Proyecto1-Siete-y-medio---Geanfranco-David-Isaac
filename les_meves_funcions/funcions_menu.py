@@ -63,17 +63,19 @@ def menu01():
                 lenght = len(boots)
 
             data = ""
+            data += "*" * 95 + "\n" + "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "||".ljust(4) + \
+                    "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "\n" + "*" * 95 + "\n"
             for i in range(lenght):
                 if len(boots) - 1 < i:
                     data += " " * 20 + "|| "
                 else:
-                    data += boots[i][0] + " " + boots[i][1] + " " + boots[i][2] + " || "
+                    data += boots[i][0].ljust(15) + boots[i][1].ljust(20) + boots[i][2].ljust(11) + "||".ljust(4)
                 if len(humans) - 1 < i:
                     data += " " * 20 + "\n"
                 else:
-                    data += humans[i][0] + " " + humans[i][1] + " " + humans[i][2] + "\n"
+                    data += humans[i][0].ljust(15) + humans[i][1].ljust(20) + humans[i][2].ljust(11) + "\n"
 
-            print(data)
+            print(data + "=" * 95)
 
         else:
             break
