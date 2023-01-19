@@ -29,10 +29,6 @@ while not leave:
             addDataToCardGame("")
             addDataToPlayerGame("")
 
-            print(cardgame)
-            print(player_game)
-            print(player_game_round)
-
             players = {}
             contextGame["players"] = []
             contextGame["deck"] = ""
