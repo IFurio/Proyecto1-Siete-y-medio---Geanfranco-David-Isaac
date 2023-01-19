@@ -1,6 +1,7 @@
 # Imports
 import pymysql
 import pymysql.cursors
+from funcions_joc import Set_GameTime
 
 
 conn = pymysql.connect(
@@ -32,3 +33,6 @@ def InputBBDD(query):
 # for i in range(len(resultado)):
 #     print(resultado[i][0])
 #query = "'insert into player_game_round values ( "{}",{},"{}",{},{},{},{},{})'".format(cardgame_id,round_num,player_id,player_game_round[round_num][player_id]["is_bank"],player_game_round[round_num][player_id]["bet_points"] , player_game_round[round_num][player_id]["cards_value"],player_game_round[round_num][player_id]["starting_round_points"],player_game_round[round_num][player_id]["ending_round_points"])
+
+# query = "INSERT INTO cardgame (players,rounds,start_hour,end_hour,deck_id) VALUES (3,5,'{}','{}','POK')".format(Set_GameTime(),Set_GameTime())
+# InputBBDD(query)

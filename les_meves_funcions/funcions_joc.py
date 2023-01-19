@@ -98,11 +98,7 @@ def Set_InitialPoints():
 # Usando el modulo datetime (importado) pedimos la hora local actual
 def Set_GameTime():
     hora_local=datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    #######################################################################################################
-    ####################GUARDAR HORA EN EL DICCIONARIO DE LA PARTIDA ######################################
-    #######################################################################################################
-    print(hora_local)
-    return
+    return hora_local
 
 
 # Definir la prioridad de cada jugador antes de comenzar la partiad.
