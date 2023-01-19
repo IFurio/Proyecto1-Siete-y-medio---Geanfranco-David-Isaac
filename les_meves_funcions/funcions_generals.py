@@ -71,14 +71,12 @@ def save_player(name, dni, profile, human_bool):
     save = input("Save player? Y/N: ")
     while True:
         if save.upper() == "Y":
-            print("Player saved")
-            break
+            return True
         elif save.upper() == "N":
             print("Player discarded.")
-            break
+            return False
         else:
             print("Incorrec option.")
-    return
 
 def menu06():
     while True:
@@ -104,8 +102,13 @@ def newPlayer_human():
     name = new_name()
     dni = new_nif(1)
     profile = player_profile()
-    save_player(name, dni, profile, 1)
-    print("INSERT ")
+    save = save_player(name, dni, profile, 1)
+    if save:
+        query = "INSERT INTO player VALUES ('{}','{}',{},{})".format(dni,name,profile,1)
+        InputBBDD(query)
+        print("Player saved")
+    else:
+        print("Player information discarded")
 
 def newPlayer_boot():
     print("*" * 95 + "\n" +
@@ -114,7 +117,13 @@ def newPlayer_boot():
     name = new_name()
     dni = new_nif(0)
     profile = player_profile()
-    save_player(name, dni, profile, 0)
+    save = save_player(name, dni, profile, 0)
+    if save:
+        query = "INSERT INTO player VALUES ('{}','{}',{},{})".format(dni,name,profile,0)
+        InputBBDD(query)
+        print("Player saved")
+    else:
+        print("Player information discarded")
 
 newPlayer_human()
 #90631839V
