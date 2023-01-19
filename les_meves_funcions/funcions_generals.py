@@ -7,9 +7,6 @@ from les_meves_funcions.funcions_menu import *
 
 def new_name():
     while True:
-        print("*" * 95 + "\n" +
-                      figlet_format(" " * 24 + "New Human Player", font="doom") +
-                      "*" * 95 + "\n")
         name = input("Name:")
         try:
             if name == "":
@@ -28,9 +25,6 @@ def new_nif(human):
     for i in range(len(resultado)):
         exist_id.append(resultado[i][0])
     while True:
-        print("*" * 95 + "\n" +
-                      figlet_format(" " * 24 + "New Human Player", font="doom") +
-                      "*" * 95 + "\n")
         if human:
             dni = input("Enter NIF: ")
             # Comprobamos que introduce 9 caracteres.
@@ -104,17 +98,23 @@ def menu06():
         else:
             break
 def newPlayer_human():
+    print("*" * 95 + "\n" +
+          figlet_format(" " * 24 + "New Human Player", font="doom") +
+          "*" * 95 + "\n")
     name = new_name()
     dni = new_nif(1)
     profile = player_profile()
     save_player(name, dni, profile, 1)
-    print("aaaaaaaaaAAAAAAAAAAAAAAaaaaaaaaaaaa")
+    print("INSERT ")
 
 def newPlayer_boot():
+    print("*" * 95 + "\n" +
+          figlet_format(" " * 24 + "New Human Player", font="doom") +
+          "*" * 95 + "\n")
     name = new_name()
     dni = new_nif(0)
     profile = player_profile()
     save_player(name, dni, profile, 0)
 
-newPlayer_boot()
+newPlayer_human()
 #90631839V

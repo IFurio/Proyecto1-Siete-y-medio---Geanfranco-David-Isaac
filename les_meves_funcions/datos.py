@@ -192,9 +192,7 @@ menus = {
         "excep": []
     },
     "06": {
-            "header": "*" * 95 + "\n" +
-                      figlet_format(" " * 24 + "New Human Player", font="doom") +
-                      "*" * 95 + "\n\n",
+            "header": "",
             "textOpts": "Select your profile:\n"
                         "1)Cautious\n"
                         "2)Moderated\n"
