@@ -131,6 +131,8 @@ def menu02():
                                              "cards": [], "round_points": 0}
 
                     contextGame["players"].append(humans[i][0])
+                if i == 2:
+                    break
 
         elif opt == 2:
             opt = getOpt(menus["02"]["header"],

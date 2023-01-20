@@ -125,15 +125,37 @@ def checkMinimun2PlayerWithPoints():
         return True
 
 
+# Funcion para saber el ganador de la partida
+def checkWinner():
+    for pas in range(len(contextGame["players"]) - 1):
+        listIsOrdered = True
+        for i in range(len(contextGame["players"]) - 1 - pas):
+            if players[contextGame["players"][i]]["points"] > players[contextGame["players"][i + 1]]["points"]:
+                changeBox = contextGame["players"][i]
+                contextGame["players"][i] = contextGame["players"][i + 1]
+                contextGame["players"][i + 1] = changeBox
+                listIsOrdered = False
+
+            elif players[contextGame["players"][i]]["points"] == players[contextGame["players"][i + 1]]["points"]:
+                if players[contextGame["players"][i]]["priority"] > players[contextGame["players"][i + 1]]["priority"]:
+                    changeBox = contextGame["players"][i]
+                    contextGame["players"][i] = contextGame["players"][i + 1]
+                    contextGame["players"][i + 1] = changeBox
+                    listIsOrdered = False
+
+        if listIsOrdered:
+            break
+
+
 # Funcion para apuestas
-def setPlayersBet(bank):
+def setPlayersBet():
     for player in contextGame["players"]:
         # Si el jugador no es banca se hacen apuestas
-        if player != bank:
+        if not players[player]["bank"]:
 
             # Si el jugador es humano se le pregunta si quiere apostar a mano o automaticamente
             if players[player]["human"]:
-                opt = getOpt("Elige tu apuesta " + player + ":",
+                opt = getOpt("\n" + "Elige tu apuesta " + player + ":",
                              "\nBank points: " + str(players[contextGame["bank"]]["points"]) +
                              "\nYour points: " + str(players[player]["points"]) + "\n" +
                              "\n1)Automatic - " + str((players[player]["type"] * players[player]["points"]) // 100) +
@@ -142,8 +164,8 @@ def setPlayersBet(bank):
                 # Modo automatico
                 if opt == 1:
                     bet = (players[player]["type"] * players[player]["points"]) // 100
-                    if bet > players[bank]["points"]:
-                        bet = players[bank]["points"]
+                    if bet > players[contextGame["bank"]]["points"]:
+                        bet = players[contextGame["bank"]]["points"]
                         players[player]["bet"] = bet
                     else:
                         players[player]["bet"] = bet
@@ -157,7 +179,7 @@ def setPlayersBet(bank):
                             print("The bet need to be numeric.")
                         elif int(bet) > players[player]["points"]:
                             print("Your bet can't be more than your points.")
-                        elif int(bet) > players[bank]["points"]:
+                        elif int(bet) > players[contextGame["bank"]]["points"]:
                             print("Caution this be is highest than the bank points.")
                         else:
                             players[player]["bet"] = int(bet)
@@ -166,8 +188,8 @@ def setPlayersBet(bank):
             # A los boots se les apuesta automaticamente
             else:
                 bet = (players[player]["type"] * players[player]["points"]) // 100
-                if bet > players[bank]["points"]:
-                    bet = players[bank]["points"]
+                if bet > players[contextGame["bank"]]["points"]:
+                    bet = players[contextGame["bank"]]["points"]
                     players[player]["bet"] = bet
                 else:
                     players[player]["bet"] = bet
@@ -234,24 +256,26 @@ def round_loop():
     while checkMinimun2PlayerInGame() and contextGame["round"] <= contextGame["maxRounds"]:
         # Se devuelven las cartas al mazo, se ponen los puntos a cero y se resetean los candidatos a la banca
         bankCandidates = []
-        automatic = False
         for player in contextGame["players"]:
             players[player]["cards"] = []
             players[player]["round_points"] = 0
         deck = list(contextGame["deck"].keys())
 
         # Se hacen las apuestas
-        setPlayersBet(contextGame["bank"])
+        setPlayersBet()
 
         # Se introducen datos en player_game_round
         addDataToPlayerGameRound("beginning")
 
         # Loop para que cada jugador juegue su turno
         for player in contextGame["players"]:
+            automatic = False
             card = drawCard(deck)
             players[player]["cards"].append(card)
             players[player]["round_points"] += contextGame["deck"][card]["realValue"]
             if players[player]["human"]:
+                print("Hi player " + player + " you had drawn " + card)
+                input("Press ENTER to start your rond")
                 while True:
                     opt = getOpt(menus["game"]["header"],
                                  menus["game"]["textOpts"],
@@ -284,13 +308,13 @@ def round_loop():
 
                     elif opt == 2:
                         # Menu que printa las estadisticas del jugador humano
-                        print("Stats of player " + player + " in the actual round:\n")
+                        print("\n" + "Stats of player " + player + " in the actual round:\n")
                         print("Cards in hand:", players[player]["cards"])
                         print("Cards points: " + str(players[player]["round_points"]))
                         print("ProbToPass: " +
                               str(probToPass(players[player]["round_points"], deck)) + "\n")
                         print("Bet: " + str(players[player]["bet"]))
-                        print("Player points: " + str(players[player]["points"]))
+                        print("Player points: " + str(players[player]["points"]) + "\n")
                         input("INTRO CONTINUE")
 
                     elif opt == 3:
@@ -332,8 +356,8 @@ def round_loop():
                                         else:
                                             data2 += "{}: ".format(stat).ljust(15) + \
                                                      str(players[userList[j]][stat]).ljust(40)
-
-                            data2 += "\n"
+                                    data2 += "\n"
+                                    break
 
                             data1 += "\n"
 
@@ -349,7 +373,7 @@ def round_loop():
                         # Menu para que el humano pase turno
                         break
 
-            elif not players[player]["human"] or automatic:
+            if not players[player]["human"] or automatic:
                 # Aqui juegan los jugadores normales automaticamente
                 if not players[player]["bank"]:
                     while players[player]["type"] >= probToPass(players[player]["round_points"], deck):
@@ -399,13 +423,50 @@ def round_loop():
 
         # Prints para hacer pruebas de funcionamiento
         print("Round: " + str(contextGame["round"]) + " of " + str(contextGame["maxRounds"]) + "\n")
-        for player in contextGame["players"]:
-            print(player + " " + str(players[player]["bank"]) + ":")
-            print("Cartas en mano:", players[player]["cards"])
-            print("Bet: " + str(players[player]["bet"]))
-            print("Round points: " + str(players[player]["round_points"]))
-            print("Player points: " + str(players[player]["points"]))
-            print("ProbToPass: " + str(probToPass(players[player]["round_points"], deck)) + "\n")
+        statsList = ["id", "name", "human", "type", "bank", "initial_card",
+                     "priority", "bet", "points", "round_points", "cards"]
+        userList = list(players.keys())
+
+        data1 = ""
+        data2 = ""
+        for stat in statsList:
+            for i in range(len(userList)):
+                if i < 3:
+                    if stat == "id":
+                        data1 += "Player: ".ljust(15) + userList[i].ljust(40)
+                    elif stat == "round_points":
+                        data1 += "Round points: ".ljust(15) + \
+                                 str(players[userList[i]][stat]).ljust(40)
+                    elif stat == "initial_card":
+                        data1 += "Initial card: ".ljust(15) + players[userList[i]][stat].ljust(40)
+                    elif stat == "cards":
+                        data1 += "Cards: " + str(players[userList[i]][stat]).ljust(48)
+                    else:
+                        data1 += "{}: ".format(stat).ljust(15) + \
+                                 str(players[userList[i]][stat]).ljust(40)
+
+                else:
+                    for j in range(i, len(userList)):
+                        if stat == "id":
+                            data2 += "Player: ".ljust(15) + userList[j].ljust(40)
+                        elif stat == "round_points":
+                            data2 += "Round points: ".ljust(15) + \
+                                     str(players[userList[j]][stat]).ljust(40)
+                        elif stat == "initial_card":
+                            data2 += "Initial card: ".ljust(15) + players[userList[j]][stat].ljust(40)
+                        elif stat == "cards":
+                            data2 += "Cards: " + str(players[userList[j]][stat]).ljust(48)
+                        else:
+                            data2 += "{}: ".format(stat).ljust(15) + \
+                                     str(players[userList[j]][stat]).ljust(40)
+                    data2 += "\n"
+                    break
+
+            data1 += "\n"
+
+        print(data1)
+        print(data2)
+
         input("Pulsa la intro")
         contextGame["round"] += 1
 

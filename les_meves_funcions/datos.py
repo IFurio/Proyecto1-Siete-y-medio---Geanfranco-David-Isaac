@@ -9,7 +9,7 @@ player_game = {}
 
 player_game_round = {}
 
-contextGame = {"players": [], "round": 1, "maxRounds": 0, "deck": "", "bank": ""}
+contextGame = {"players": [], "round": 1, "maxRounds": 2, "deck": "", "bank": ""}
 
 letrasDni = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
              "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"]
@@ -105,7 +105,7 @@ menus = {
         },
     "game": {
         "header": "*" * 95 + "\n" +
-                  figlet_format(" " * 30 + "R e p o r t s", font="doom") +
+                  figlet_format(" " * 11 + "Seven and half", font="doom") +
                   "*" * 95 + "\n\n",
         "textOpts": "1)Draw a card\n2)View your profile\n3)View the game stats\n4)Automatic play\n5)Give up your turn",
         "inputOptText": "Option: ",

@@ -1,6 +1,8 @@
 # Imports
 from les_meves_funcions.funcions_joc import *
 from les_meves_funcions.funcions_menu import *
+from les_meves_funcions.datos import *
+from pyfiglet import figlet_format
 
 
 # Variables
@@ -36,20 +38,24 @@ while not leave:
             addDataToCardGame("final")
             addDataToPlayerGame("final")
 
+            # Funcion para mostrar ganadores
+            checkWinner()
+            print("*" * 95 + "\n" +
+                  figlet_format(" " * 11 + "W i n n e r :", font="doom") +
+                  figlet_format(" " * 11 + players[contextGame["players"][-1]]["name"], font="doom") +
+                  "*" * 95 + "\n\n")
+
             # En este momento se hacen los inserts
-            # addDataToCardGame("insert")
-            # addDataToPlayerGame("insert")
-            # addDataToPlayerGameRound("insert")
+            addDataToCardGame("insert")
+            addDataToPlayerGame("insert")
+            addDataToPlayerGameRound("insert")
 
             # Se reinician todos los diccionarios y las variables
             players = {}
             cardgame = {}
             player_game = {}
             player_game_round = {}
-            contextGame["players"] = []
-            contextGame["deck"] = ""
-            contextGame["round"] = 1
-            contextGame["maxRounds"] = 0
+            contextGame = {"players": [], "round": 1, "maxRounds": 0, "deck": "", "bank": ""}
 
     elif opt == 4:
         menu04()
