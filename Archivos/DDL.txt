@@ -44,7 +44,7 @@ bet_points TINYINT,
 cards_value DECIMAL(4,1),
 starting_round_points TINYINT,
 ending_round_points TINYINT,
-PRIMARY KEY (round_num),
+PRIMARY KEY (round_num, cardgame_id, player_id),
 FOREIGN KEY (cardgame_id) REFERENCES cardgame(cardgame_id),
 FOREIGN KEY (player_id) REFERENCES player(player_id)
 );
