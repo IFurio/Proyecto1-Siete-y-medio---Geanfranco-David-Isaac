@@ -93,14 +93,24 @@ menus = {
         "excep": []
     },
     "06": {
-            "header": "",
-            "textOpts": "Select your profile:\n"
-                        "1)Cautious\n"
-                        "2)Moderated\n"
-                        "3)Bold",
-            "inputOptText": "Option: ",
-            "rangeList": [1, 2, 3, 4],
-            "dict": {},
-            "excep": []
-        }
+        "header": "",
+        "textOpts": "Select your profile:\n"
+                    "1)Cautious\n"
+                    "2)Moderated\n"
+                    "3)Bold",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3, 4],
+        "dict": {},
+        "excep": []
+        },
+    "game": {
+        "header": "*" * 95 + "\n" +
+                  figlet_format(" " * 30 + "R e p o r t s", font="doom") +
+                  "*" * 95 + "\n\n",
+        "textOpts": "1)Draw a card\n2)View your profile\n3)View the game stats\n4)Automatic play\n5)Give up your turn",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3, 4, 5],
+        "dict": {},
+        "excep": []
+    }
 }

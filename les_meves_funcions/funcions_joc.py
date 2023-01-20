@@ -82,8 +82,6 @@ def orderPlayers(deck):
 def SetRound_setting():
     # Ponemos los puntos iniciales
     Set_InitialPoints()
-    # Definimos la hora de inicio
-    Set_GameTime()
     # Definimos la prioridad de los jugadores
     SetPriority()
     return
@@ -130,7 +128,11 @@ def setPlayersBet(bank):
 
             # Si el jugador es humano se le pregunta si quiere apostar a mano o automaticamente
             if players[player]["human"]:
-                opt = getOpt("Elige tu apuesta " + player + ":", "\n1)Automatica\n2)Manual", "Option:\n", [1, 2], {}, [])
+                opt = getOpt("Elige tu apuesta " + player + ":",
+                             "\nBank points: " + str(players[contextGame["bank"]]["points"]) +
+                             "\nYour points: " + str(players[player]["points"]) + "\n" +
+                             "\n1)Automatic - " + str((players[player]["type"] * players[player]["points"]) // 100) +
+                             "\n2)Manual", "Option:\n", [1, 2], {}, [])
 
                 # Modo automatico
                 if opt == 1:
@@ -147,11 +149,11 @@ def setPlayersBet(bank):
                         print("Select your bet " + player + ":")
                         bet = input("Bet: \n")
                         if not bet.isdigit():
-                            print("¡¡¡¡ERROR!!!!")
+                            print("The bet need to be numeric.")
                         elif int(bet) > players[player]["points"]:
-                            print("¡¡¡¡ERROR!!!!")
+                            print("Your bet can't be more than your points.")
                         elif int(bet) > players[bank]["points"]:
-                            print("¡¡¡¡ERROR!!!!")
+                            print("Caution this be is highest than the bank points.")
                         else:
                             players[player]["bet"] = int(bet)
                             break
@@ -227,69 +229,141 @@ def round_loop():
     while checkMinimun2PlayerInGame() and contextGame["round"] <= contextGame["maxRounds"]:
         # Se devuelven las cartas al mazo, se ponen los puntos a cero y se resetean los candidatos a la banca
         bankCandidates = []
+        automatic = False
         for player in contextGame["players"]:
             players[player]["cards"] = []
             players[player]["round_points"] = 0
         deck = list(contextGame["deck"].keys())
-        addDataToPlayerGameRound("beginning")
 
         # Se hacen las apuestas
         setPlayersBet(contextGame["bank"])
+
+        # Se introducen datos en player_game_round
+        addDataToPlayerGameRound("beginning")
 
         # Loop para que cada jugador juegue su turno
         for player in contextGame["players"]:
             card = drawCard(deck)
             players[player]["cards"].append(card)
             players[player]["round_points"] += contextGame["deck"][card]["realValue"]
-            # Aqui juegan los jugadores normales
-            if not players[player]["bank"]:
-                while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
-                    card = drawCard(deck)
-                    players[player]["cards"].append(card)
-                    players[player]["round_points"] += contextGame["deck"][card]["realValue"]
-
-                # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
-                if players[player]["round_points"] > 7.5:
-                    players[player]["round_points"] = -1
-
-            # Aqui juega la banca y al terminar de pedir se reparten los puntos, se cambia de banca y se ordenan players
-            else:
+            if players[player]["human"]:
                 while True:
-                    # Guardamos en count la cantidad de jugadores que nos superan y en points los puntos que pagaremos
-                    count, points = playersWinningBank(player)
+                    opt = getOpt(menus["game"]["header"],
+                                 menus["game"]["textOpts"],
+                                 menus["game"]["inputOptText"],
+                                 menus["game"]["rangeList"], {}, [])
 
-                    # Si la banca gana a todos los jugadores se planta
-                    if count == 0:
+                    if opt == 1:
+                        print("Your probability to pass seven and half is " +
+                              str(probToPass(players[player]["round_points"], contextGame["deck"], deck)))
+
+                        while True:
+                            draw = input("Are you sure to draw a card? Y/N\n")
+                            if not draw.isalpha():
+                                print("You need to insert a letter.")
+                            elif not draw.upper() in ("Y", "N"):
+                                print("The letter need to be '{}' or '{}'".format("Y", "N"))
+                            else:
+                                break
+
+                        if draw.upper() == "Y":
+                            card = drawCard(deck)
+                            players[player]["cards"].append(card)
+                            players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+
+                    elif opt == 2:
+                        # Menu que printa las estadisticas del jugador humano
+                        print("Stats of player " + player + " in the actual round:\n")
+                        print("Cards in hand:", players[player]["cards"])
+                        print("Cards points: " + str(players[player]["round_points"]))
+                        print("ProbToPass: " +
+                              str(probToPass(players[player]["round_points"], contextGame["deck"], deck)) + "\n")
+                        print("Bet: " + str(players[player]["bet"]))
+                        print("Player points: " + str(players[player]["points"]))
+                        input("INTRO CONTINUE")
+
+                    elif opt == 3:
+                        # Menu para que el humano vea las estadisticas de la partida
+                        print("Round: " + str(contextGame["round"]) + " of " + str(contextGame["maxRounds"]) + "\n")
+                        statsList = ["id", "name", "human", "type", "bank", "initial_card",
+                                     "priority", "bet", "points", "round_points", "cards"]
+
+                        data = ""
+                        for stat in statsList:
+                            for user in players.keys():
+                                if stat == "id":
+                                    data += "Player: ".ljust(15) + user.ljust(30)
+                                elif stat == "round_points":
+                                    data += "Round points: ".ljust(15) + str(players[user][stat]).ljust(30)
+                                elif stat == "initial_card":
+                                    data += "Initial card: ".ljust(15) + players[user][stat].ljust(30)
+                                elif stat == "cards":
+                                    data += "Cards: " + str(players[user][stat]).ljust(38)
+                                else:
+                                    data += "{}: ".format(stat).ljust(15) + str(players[user][stat]).ljust(30)
+
+                            data += "\n"
+                        print(data)
+
+                    elif opt == 4:
+                        # Menu para que el humano juegue de forma automatica
+                        automatic = True
                         break
 
-                    # En esta comparacion la banca pide como un jugador normal
-                    elif players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
-                        card = drawCard(deck)
-                        players[player]["cards"].append(card)
-                        players[player]["round_points"] += contextGame["deck"][card]["realValue"]
-
-                    # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
-                    elif count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
-                        card = drawCard(deck)
-                        players[player]["cards"].append(card)
-                        players[player]["round_points"] += contextGame["deck"][card]["realValue"]
-
-                    # En caso de que su nivel de resiesgo se pase se planta
                     else:
+                        # Menu para que el humano pase turno
                         break
 
-                # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
-                if players[player]["round_points"] > 7.5:
-                    players[player]["round_points"] = -1
+            elif not players[player]["human"] or automatic:
+                # Aqui juegan los jugadores normales automaticamente
+                if not players[player]["bank"]:
+                    while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                        card = drawCard(deck)
+                        players[player]["cards"].append(card)
+                        players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+
+                    # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
+                    if players[player]["round_points"] > 7.5:
+                        players[player]["round_points"] = -1
+
+                # Aqui juega la banca y al terminar de pedir se reparten los puntos, se cambia de banca y se ordenan players
+                else:
+                    while True:
+                        # Guardamos en count la cantidad de jugadores que nos superan y en points los puntos que pagaremos
+                        count, points = playersWinningBank(player)
+
+                        # Si la banca gana a todos los jugadores se planta
+                        if count == 0:
+                            break
+
+                        # En esta comparacion la banca pide como un jugador normal
+                        elif players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                            card = drawCard(deck)
+                            players[player]["cards"].append(card)
+                            players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+
+                        # Aqui comprovamos si la banca se quedara sin puntos o si todos los jugadores ganan a la banca
+                        elif count == len(contextGame["players"]) - 1 or points >= players[player]["points"]:
+                            card = drawCard(deck)
+                            players[player]["cards"].append(card)
+                            players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+
+                        # En caso de que su nivel de resiesgo se pase se planta
+                        else:
+                            break
+
+                    # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
+                    if players[player]["round_points"] > 7.5:
+                        players[player]["round_points"] = -1
 
         # Utilizamos esta variable para repartir los puntos en orden de prioridad y se apuntan candidatos a bank
         pointsDistribution(contextGame["bank"], bankCandidates)
 
         # Hueco para insert de ronda
-        addDataToPlayerGameRound("")
+        addDataToPlayerGameRound("final")
 
         # Prints para hacer pruebas de funcionamiento
-        print("Ronda: " + str(contextGame["round"]) + "\n")
+        print("Round: " + str(contextGame["round"]) + " of " + str(contextGame["maxRounds"]) + "\n")
         for player in contextGame["players"]:
             print(player + " " + str(players[player]["bank"]) + ":")
             print("Cartas en mano:", players[player]["cards"])

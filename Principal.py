@@ -20,15 +20,32 @@ while not leave:
         menu02()
 
     elif opt == 3:
+        # Comprobamos que este correcto y entramos en la partida
         the_game_starts = check_settings()
         if the_game_starts:
+            # Se preparan las cosas para que empiece la partida
             SetRound_setting()
-            addDataToPlayerGame("beginning")
-            round_loop()
-            addDataToCardGame("")
-            addDataToPlayerGame("")
 
+            # Guardamos datos que necesitamos del princio de la partida
+            addDataToPlayerGame("beginning")
+
+            # Bucle en el que se juegan las partidas
+            round_loop()
+
+            # Se guardan datos que necesitamos del final de la partida
+            addDataToCardGame("final")
+            addDataToPlayerGame("final")
+
+            # En este momento se hacen los inserts
+            # addDataToCardGame("insert")
+            # addDataToPlayerGame("insert")
+            # addDataToPlayerGameRound("insert")
+
+            # Se reinician todos los diccionarios y las variables
             players = {}
+            cardgame = {}
+            player_game = {}
+            player_game_round = {}
             contextGame["players"] = []
             contextGame["deck"] = ""
             contextGame["round"] = 1

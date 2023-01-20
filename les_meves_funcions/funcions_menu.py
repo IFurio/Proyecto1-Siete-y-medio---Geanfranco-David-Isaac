@@ -1,6 +1,7 @@
 # Imports
 from les_meves_funcions.funcions_generals import *
 
+
 # Funciones de menus
 def getOpt(header, textOpts, inputOptText, rangeList, dictionary, exceptions):
     while True:
