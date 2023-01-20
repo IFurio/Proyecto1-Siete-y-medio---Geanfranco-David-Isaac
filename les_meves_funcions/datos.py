@@ -99,7 +99,7 @@ menus = {
                     "2)Moderated\n"
                     "3)Bold",
         "inputOptText": "Option: ",
-        "rangeList": [1, 2, 3, 4],
+        "rangeList": [1, 2, 3],
         "dict": {},
         "excep": []
         },
@@ -114,3 +114,4 @@ menus = {
         "excep": []
     }
 }
+menuRounds = "*" * 95 + "\n" + figlet_format(" " * 5 + "ROUNDS", font="colossal") + "*" * 95 + "\n"

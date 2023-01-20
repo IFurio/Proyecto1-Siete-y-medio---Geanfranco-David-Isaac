@@ -78,7 +78,7 @@ def save_player(name, dni, profile, human_bool):
             print("Player discarded.")
             return False
         else:
-            print("Incorrec option.")
+            print("Incorrect option.")
 
 
 def menu06():

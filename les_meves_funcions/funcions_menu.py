@@ -146,11 +146,13 @@ def menu02():
 
         elif opt == 3:
             while True:
-                rounds = input("How much rounds you want to play? ")
+                print(menuRounds)
+                rounds = input("1"
+                               "How many rounds do you want to play? ")
                 if not rounds.isdigit():
-                    print("¡ERROR!")
+                    print("Only numbers accepted")
                 elif int(rounds) > 30 or int(rounds) < 5:
-                    print("¡ERROR!")
+                    print("Number of rounds has to be between 5 and 30")
                 else:
                     contextGame["maxRounds"] = int(rounds)
                     break
