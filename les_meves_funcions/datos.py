@@ -1,6 +1,19 @@
 # Imports
 from pyfiglet import figlet_format
 
+
+def resetDicts():
+    players.clear()
+    cardgame.clear()
+    player_game.clear()
+    player_game_round.clear()
+    contextGame["players"].clear()
+    contextGame["round"] = 1
+    contextGame["maxRounds"] = 0
+    contextGame["deck"] = ""
+    contextGame["bank"] = ""
+
+
 players = {}
 
 cardgame = {}
@@ -9,7 +22,7 @@ player_game = {}
 
 player_game_round = {}
 
-contextGame = {"players": [], "round": 1, "maxRounds": 2, "deck": "", "bank": ""}
+contextGame = {"players": [], "round": 1, "maxRounds": 0, "deck": "", "bank": ""}
 
 letrasDni = ["T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B",
              "N", " J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E"]

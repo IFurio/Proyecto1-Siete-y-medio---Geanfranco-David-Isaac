@@ -107,7 +107,6 @@ def menu02():
                      menus["02"]["inputOptText"],
                      menus["02"]["rangeList"], {}, [])
         if opt == 1:
-            humans, boots = fetchPlayers()
 
             headeractual = "*" * 95 + "\n" + figlet_format("".ljust(32) + "S H O W", font="doom") + "*" * 95 + "\n" \
                            + "ACTUAL PLAYERS IN GAME".center(95) + "\n"
@@ -115,12 +114,12 @@ def menu02():
             data = ""
             print(contextGame["players"])
             for player in contextGame["players"]:
-                data += player + " " + players[player]["name"] + " "
+                data += player.rjust(40) + " - " + players[player]["name"] + " - "
                 if players[player]["human"]:
-                    data += "human"
+                    data += "human - "
 
                 else:
-                    data += "boot"
+                    data += "boot - "
 
                 if players[player]["type"] == 30:
                     data += "Cautious"
@@ -138,7 +137,9 @@ def menu02():
 
             data = "=" * 95 + "\n" + "Boots".rjust(24) + "||".center(46) + "Humans\n" + "*" * 95 + "\n" + \
                    "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "||".ljust(4) + \
-                    "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "\n" + "*" * 95 + "\n"
+                   "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "\n" + "*" * 95 + "\n"
+
+            humans, boots = fetchPlayers()
 
             if len(humans) > len(boots):
                 lenght = len(humans)
@@ -162,47 +163,84 @@ def menu02():
                 dnis.append("-" + user[0])
                 dnis.append(user[0])
 
-            header = "*" * 95 + "\n" + figlet_format("".ljust(23) + "P l a y e r s", font="doom") + "*" * 95 + "\n" \
+            header = "*" * 95 + "\n" + figlet_format("".ljust(23) + "P l a y e r s", font="doom") + "*" * 95 + "\n"\
                      + "Add or remove players".center(95)
 
-            opt = getOpt(header, data + "=" * 95, "Option ( -id to remove player, id to add player, sh to show actual "
-                                                  "players in game 'quit' to exit)\n", [], {}, dnis)
+            while True:
 
-            if opt != "quit" and opt != "sh":
-                if opt[0] == "-":
-                    opt = opt[1:]
-                    answer = input("Do you want to remove " + opt + "?\nY/y = yes: ")
-                    if answer == "y" or answer == "Y":
-                        contextGame["players"].remove(opt)
-                        players.pop(opt)
-                        print("Player has been removed!!!")
-                        input("Enter to continue")
+                opt = getOpt(header, data + "=" * 95, "Option ( -id to remove player, id to add player, sh to show actual "
+                                                      "players in game 'quit' to exit)\n", [], {}, dnis)
+
+                if opt != "quit" and opt != "sh":
+                    if opt[0] == "-":
+                        opt = opt[1:]
+                        answer = input("Do you want to remove " + opt + "?\nY/y = yes: ")
+                        if answer == "y" or answer == "Y":
+                            contextGame["players"].remove(opt)
+                            players.pop(opt)
+                            print("Player has been removed!!!")
+                            input("Enter to continue")
+                        else:
+                            print("Player not removed!!!")
+                            input("Enter to continue")
+
+                    elif opt not in contextGame["players"]:
+                        answer = input("Do you want to add " + opt + "?\nY/y = yes: ")
+                        if answer == "y" or answer == "Y":
+                            contextGame["players"].append(opt)
+                            humans, boots = fetchPlayers("int")
+                            for i in range(lenght):
+                                if not len(boots) - 1 < i:
+                                    if opt in boots[i]:
+                                        players[opt] = {"name": boots[i][1], "human": boots[i][3], "bank": False,
+                                                        "initial_card": "",
+                                                        "priority": 0, "type": boots[i][2], "bet": 0, "points": 0,
+                                                        "cards": [],
+                                                        "round_points": 0}
+                                if not len(humans) - 1 < i:
+                                    if opt in humans[i]:
+                                        players[opt] = {"name": humans[i][1], "human": humans[i][3], "bank": False,
+                                                        "initial_card": "",
+                                                        "priority": 0, "type": humans[i][2], "bet": 0, "points": 0,
+                                                        "cards": [],
+                                                        "round_points": 0}
+
+                            print("Player has been added!!!")
+                            input("Enter to continue")
+                        else:
+                            print("Player not added!!!")
+                            input("Enter to continue")
                     else:
-                        print("Player not removed!!!")
+                        print("The player " + opt + " is in the game.")
                         input("Enter to continue")
+
+                elif opt == "sh":
+                    datos = ""
+                    print(contextGame["players"])
+                    for player in contextGame["players"]:
+                        datos += player.rjust(40) + " - " + players[player]["name"] + " - "
+                        if players[player]["human"]:
+                            datos += "human - "
+
+                        else:
+                            datos += "boot - "
+
+                        if players[player]["type"] == 30:
+                            datos += "Cautious"
+
+                        if players[player]["type"] == 40:
+                            datos += "Moderated"
+
+                        if players[player]["type"] == 50:
+                            datos += "Bold"
+
+                        datos += "\n"
+
+                    print(headeractual, datos)
+                    input("Enter to continue".center(95))
 
                 else:
-                    answer = input("Do you want to add " + opt + "?\nY/y = yes: ")
-                    if answer == "y" or answer == "Y":
-                        contextGame["players"].append(opt)
-                        humans, boots = fetchPlayers("int")
-                        for i in range(lenght):
-                            if not len(boots) - 1 < i:
-                                if opt in boots[i]:
-                                    players[opt] = {"name": boots[i][1], "human": boots[i][3], "bank": False, "initial_card": "",
-                                                    "priority": 0, "type": boots[i][2], "bet": 0, "points": 0, "cards": [],
-                                                    "round_points": 0}
-                            if not len(humans) - 1 < i:
-                                data += " " * 46 + "\n"
-
-                        print("Player has been added!!!")
-                        input("Enter to continue")
-                    else:
-                        print("Player not added!!!")
-                        input("Enter to continue")
-
-            elif opt == "sh":
-                print("lista de actual players")
+                    break
 
         elif opt == 2:
             opt = getOpt(menus["02"]["header"],
@@ -217,8 +255,7 @@ def menu02():
         elif opt == 3:
             while True:
                 print(menuRounds)
-                rounds = input("1"
-                               "How many rounds do you want to play? ")
+                rounds = input("How many rounds do you want to play? ")
                 if not rounds.isdigit():
                     print("Only numbers accepted")
                 elif int(rounds) > 30 or int(rounds) < 5:

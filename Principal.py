@@ -45,17 +45,15 @@ while not leave:
                   figlet_format(" " * 11 + players[contextGame["players"][-1]]["name"], font="doom") +
                   "*" * 95 + "\n\n")
 
+            input("Enter to continue")
+
             # En este momento se hacen los inserts
             addDataToCardGame("insert")
             addDataToPlayerGame("insert")
             addDataToPlayerGameRound("insert")
 
             # Se reinician todos los diccionarios y las variables
-            players = {}
-            cardgame = {}
-            player_game = {}
-            player_game_round = {}
-            contextGame = {"players": [], "round": 1, "maxRounds": 0, "deck": "", "bank": ""}
+            resetDicts()
 
     elif opt == 4:
         menu04()
