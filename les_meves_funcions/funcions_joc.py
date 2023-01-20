@@ -51,7 +51,7 @@ def drawCard(deckList):
 
 
 # Funcion para ordenar jugadores
-def orderPlayers(deck):
+def orderPlayers():
     for pas in range(len(contextGame["players"]) - 1):
         # Esta variable sirve para no tener que hacer comprovaciones de mas
         listIsOrdered = True
@@ -100,7 +100,12 @@ def SetPriority():
     deck = list(contextGame["deck"].keys())
     for player in contextGame["players"]:
         players[player]["initial_card"] = drawCard(deck)
-    orderPlayers(contextGame["deck"])
+
+    orderPlayers()
+
+    for i in range(len(contextGame["players"])):
+        players[contextGame["players"][i]]["priority"] = i + 1
+
     players[contextGame["players"][-1]]["bank"] = True
     contextGame["bank"] = contextGame["players"][-1]
     return
@@ -201,7 +206,7 @@ def pointsDistribution(bank, candidates):
 
 
 # Funcion calculo de probabilidad de pasar 7 y medio
-def probToPass(points, deckName, deckList):
+def probToPass(points, deckList):
     # Este count sirve para saber cuantas cartas hacen que te pases de 7 y medio
     count = 0
     for card in deckList:
@@ -254,22 +259,28 @@ def round_loop():
                                  menus["game"]["rangeList"], {}, [])
 
                     if opt == 1:
-                        print("Your probability to pass seven and half is " +
-                              str(probToPass(players[player]["round_points"], contextGame["deck"], deck)))
+                        if players[player]["round_points"] < 7.5:
+                            print("Your probability to pass seven and half is " +
+                                  str(probToPass(players[player]["round_points"], deck)))
 
-                        while True:
-                            draw = input("Are you sure to draw a card? Y/N\n")
-                            if not draw.isalpha():
-                                print("You need to insert a letter.")
-                            elif not draw.upper() in ("Y", "N"):
-                                print("The letter need to be '{}' or '{}'".format("Y", "N"))
-                            else:
-                                break
+                            while True:
+                                draw = input("Are you sure to draw a card? Y/N\n")
+                                if not draw.isalpha():
+                                    print("You need to insert a letter.")
+                                elif not draw.upper() in ("Y", "N"):
+                                    print("The letter need to be '{}' or '{}'".format("Y", "N"))
+                                else:
+                                    break
 
-                        if draw.upper() == "Y":
-                            card = drawCard(deck)
-                            players[player]["cards"].append(card)
-                            players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+                            if draw.upper() == "Y":
+                                card = drawCard(deck)
+                                players[player]["cards"].append(card)
+                                players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+
+                        elif players[player]["round_points"] == 7.5:
+                            print("You already have Seven and Half.")
+                        else:
+                            print("You have exceeded Seven and Half.")
 
                     elif opt == 2:
                         # Menu que printa las estadisticas del jugador humano
@@ -277,7 +288,7 @@ def round_loop():
                         print("Cards in hand:", players[player]["cards"])
                         print("Cards points: " + str(players[player]["round_points"]))
                         print("ProbToPass: " +
-                              str(probToPass(players[player]["round_points"], contextGame["deck"], deck)) + "\n")
+                              str(probToPass(players[player]["round_points"], deck)) + "\n")
                         print("Bet: " + str(players[player]["bet"]))
                         print("Player points: " + str(players[player]["points"]))
                         input("INTRO CONTINUE")
@@ -287,23 +298,47 @@ def round_loop():
                         print("Round: " + str(contextGame["round"]) + " of " + str(contextGame["maxRounds"]) + "\n")
                         statsList = ["id", "name", "human", "type", "bank", "initial_card",
                                      "priority", "bet", "points", "round_points", "cards"]
+                        userList = list(players.keys())
 
-                        data = ""
+                        data1 = ""
+                        data2 = ""
                         for stat in statsList:
-                            for user in players.keys():
-                                if stat == "id":
-                                    data += "Player: ".ljust(15) + user.ljust(30)
-                                elif stat == "round_points":
-                                    data += "Round points: ".ljust(15) + str(players[user][stat]).ljust(30)
-                                elif stat == "initial_card":
-                                    data += "Initial card: ".ljust(15) + players[user][stat].ljust(30)
-                                elif stat == "cards":
-                                    data += "Cards: " + str(players[user][stat]).ljust(38)
-                                else:
-                                    data += "{}: ".format(stat).ljust(15) + str(players[user][stat]).ljust(30)
+                            for i in range(len(userList)):
+                                if i < 3:
+                                    if stat == "id":
+                                        data1 += "Player: ".ljust(15) + userList[i].ljust(40)
+                                    elif stat == "round_points":
+                                        data1 += "Round points: ".ljust(15) + \
+                                                 str(players[userList[i]][stat]).ljust(40)
+                                    elif stat == "initial_card":
+                                        data1 += "Initial card: ".ljust(15) + players[userList[i]][stat].ljust(40)
+                                    elif stat == "cards":
+                                        data1 += "Cards: " + str(players[userList[i]][stat]).ljust(48)
+                                    else:
+                                        data1 += "{}: ".format(stat).ljust(15) + \
+                                                 str(players[userList[i]][stat]).ljust(40)
 
-                            data += "\n"
-                        print(data)
+                                else:
+                                    for j in range(i, len(userList)):
+                                        if stat == "id":
+                                            data2 += "Player: ".ljust(15) + userList[j].ljust(40)
+                                        elif stat == "round_points":
+                                            data2 += "Round points: ".ljust(15) + \
+                                                     str(players[userList[j]][stat]).ljust(40)
+                                        elif stat == "initial_card":
+                                            data2 += "Initial card: ".ljust(15) + players[userList[j]][stat].ljust(40)
+                                        elif stat == "cards":
+                                            data2 += "Cards: " + str(players[userList[j]][stat]).ljust(48)
+                                        else:
+                                            data2 += "{}: ".format(stat).ljust(15) + \
+                                                     str(players[userList[j]][stat]).ljust(40)
+
+                            data2 += "\n"
+
+                            data1 += "\n"
+
+                        print(data1)
+                        print(data2)
 
                     elif opt == 4:
                         # Menu para que el humano juegue de forma automatica
@@ -317,7 +352,7 @@ def round_loop():
             elif not players[player]["human"] or automatic:
                 # Aqui juegan los jugadores normales automaticamente
                 if not players[player]["bank"]:
-                    while players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                    while players[player]["type"] >= probToPass(players[player]["round_points"], deck):
                         card = drawCard(deck)
                         players[player]["cards"].append(card)
                         players[player]["round_points"] += contextGame["deck"][card]["realValue"]
@@ -337,7 +372,7 @@ def round_loop():
                             break
 
                         # En esta comparacion la banca pide como un jugador normal
-                        elif players[player]["type"] >= probToPass(players[player]["round_points"], contextGame["deck"], deck):
+                        elif players[player]["type"] >= probToPass(players[player]["round_points"], deck):
                             card = drawCard(deck)
                             players[player]["cards"].append(card)
                             players[player]["round_points"] += contextGame["deck"][card]["realValue"]
@@ -370,7 +405,7 @@ def round_loop():
             print("Bet: " + str(players[player]["bet"]))
             print("Round points: " + str(players[player]["round_points"]))
             print("Player points: " + str(players[player]["points"]))
-            print("ProbToPass: " + str(probToPass(players[player]["round_points"], contextGame["deck"], deck)) + "\n")
+            print("ProbToPass: " + str(probToPass(players[player]["round_points"], deck)) + "\n")
         input("Pulsa la intro")
         contextGame["round"] += 1
 

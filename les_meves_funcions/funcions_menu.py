@@ -63,7 +63,7 @@ def menu01():
 
             data = "=" * 95 + "\n" + "Boots".rjust(24) + "||".center(46) + "Humans\n" + "*" * 95 + "\n" + \
                    "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "||".ljust(4) + \
-                    "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "\n" + "*" * 95 + "\n"
+                   "ID".ljust(15) + "Name".ljust(20) + "Profile".ljust(11) + "\n" + "*" * 95 + "\n"
             for i in range(lenght):
                 if len(boots) - 1 < i:
                     data += " " * 46 + "||".ljust(4)
@@ -74,6 +74,9 @@ def menu01():
                 else:
                     data += humans[i][0].ljust(15) + humans[i][1].ljust(20) + humans[i][2].ljust(11) + "\n"
 
+            #######################################
+            ########## REVISAR IMPORTANTE #########
+            #######################################
             players = humans + boots
             dnis = ["quit"]
 
