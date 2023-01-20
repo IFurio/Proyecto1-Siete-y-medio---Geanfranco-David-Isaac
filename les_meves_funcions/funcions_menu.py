@@ -73,10 +73,6 @@ def menu01():
                     data += " " * 46 + "\n"
                 else:
                     data += humans[i][0].ljust(15) + humans[i][1].ljust(20) + humans[i][2].ljust(11) + "\n"
-
-            #######################################
-            ########## REVISAR IMPORTANTE #########
-            #######################################
             players = humans + boots
             dnis = ["quit"]
 
