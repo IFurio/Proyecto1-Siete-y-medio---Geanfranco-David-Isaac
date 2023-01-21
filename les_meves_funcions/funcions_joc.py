@@ -296,9 +296,9 @@ def round_loop():
                 input("Press ENTER to start your rond")
 
                 while True:
-                    print("Your hand: " + str(players[player]["cards"]))
-                    print("Your points: " + str(players[player]["round_points"]) + "\n")
                     opt = getOpt(menus["game"]["header"],
+                                 "Your hand: " + str(players[player]["cards"]) + "\n" +
+                                 "Your points: " + str(players[player]["round_points"]) + "\n" +
                                  menus["game"]["textOpts"],
                                  menus["game"]["inputOptText"],
                                  menus["game"]["rangeList"], {}, [])
