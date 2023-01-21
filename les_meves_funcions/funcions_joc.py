@@ -296,6 +296,8 @@ def round_loop():
                 input("Press ENTER to start your rond")
 
                 while True:
+                    print("Your hand: " + str(players[player]["cards"]))
+                    print("Your points: " + str(players[player]["round_points"]) + "\n")
                     opt = getOpt(menus["game"]["header"],
                                  menus["game"]["textOpts"],
                                  menus["game"]["inputOptText"],
@@ -324,6 +326,8 @@ def round_loop():
                                 card = drawCard(deck)
                                 players[player]["cards"].append(card)
                                 players[player]["round_points"] += contextGame["deck"][card]["realValue"]
+                                print("You had drawn " + card)
+                                input("Press ENTER to start your rond")
 
                         # Si no le repartimos carta miramos los puntos que tiene y le avisamos de lo que pasa
                         elif players[player]["round_points"] == 7.5:
@@ -411,6 +415,9 @@ def round_loop():
 
                     # La ultima opcion es para dejar de pedir, hacemos un break y pasa de turno
                     else:
+                        # Este if se utiliza para que si te pasas de 7.5 tu apuesta sea negativa
+                        if players[player]["round_points"] > 7.5:
+                            players[player]["round_points"] = -1
                         break
 
             # Aqui juegan los boots, o en caso de haber activado automatic tambien juegan los humanos
@@ -427,8 +434,7 @@ def round_loop():
                     if players[player]["round_points"] > 7.5:
                         players[player]["round_points"] = -1
 
-                # Aqui juega la banca y al terminar de pedir se reparten los puntos,
-                # se cambia de banca y se ordenan players
+                # Aqui juega la banca
                 else:
                     while True:
                         # Guardamos en count la cantidad de jugadores que nos superan

@@ -41,9 +41,9 @@ def InputBBDD(query):
     conn.close()
 
 
-#print(cursor.description[0][0])
-#resultado = cursor.fetchall()
-#print(resultado)
+# print(cursor.description[0][0])
+# resultado = cursor.fetchall()
+# print(resultado)
 # resultado = SelectBBDD("Select player_id from player")
 # exist_id = []
 # for i in range(len(resultado)):
@@ -51,7 +51,7 @@ def InputBBDD(query):
 #query = "'insert into player_game_round values ( "{}",{},"{}",{},{},{},{},{})'".format(cardgame_id,round_num,player_id,player_game_round[round_num][player_id]["is_bank"],player_game_round[round_num][player_id]["bet_points"] , player_game_round[round_num][player_id]["cards_value"],player_game_round[round_num][player_id]["starting_round_points"],player_game_round[round_num][player_id]["ending_round_points"])
 
 
-def fetchPlayers(type="str"):
+def fetchPlayers(ret="str"):
     humanList = []
     bootList = []
 
@@ -59,7 +59,7 @@ def fetchPlayers(type="str"):
 
     for user in fetch:
         user = list(user)
-        if type == "str":
+        if ret == "str":
             if user[2] == 30:
                 user[2] = "Cautious"
             if user[2] == 40:
