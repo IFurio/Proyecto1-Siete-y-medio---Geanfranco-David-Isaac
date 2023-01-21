@@ -28,13 +28,13 @@ while not leave:
             # Se preparan las cosas para que empiece la partida
             SetRound_setting()
 
-            # Guardamos datos que necesitamos del princio de la partida
+            # Guardamos datos de players que necesitamos del princio de la partida
             addDataToPlayerGame("beginning")
 
             # Bucle en el que se juegan las partidas
             round_loop()
 
-            # Se guardan datos que necesitamos del final de la partida
+            # Se guardan datos de partida y players que necesitamos del final de la partida
             addDataToCardGame("final")
             addDataToPlayerGame("final")
 
@@ -48,9 +48,9 @@ while not leave:
             input("Enter to continue")
 
             # En este momento se hacen los inserts
-            addDataToCardGame("insert")
-            addDataToPlayerGame("insert")
-            addDataToPlayerGameRound("insert")
+            # addDataToCardGame("insert")
+            # addDataToPlayerGame("insert")
+            # addDataToPlayerGameRound("insert")
 
             # Se reinician todos los diccionarios y las variables
             resetDicts()
