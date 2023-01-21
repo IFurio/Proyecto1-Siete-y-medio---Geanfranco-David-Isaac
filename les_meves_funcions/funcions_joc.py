@@ -148,23 +148,36 @@ def setPlayersBet():
     for player in contextGame["players"]:
         # Si el jugador no es banca se hacen apuestas
         if not players[player]["bank"]:
-
             # Si el jugador es humano se le pregunta si quiere apostar a mano o automaticamente
             if players[player]["human"]:
-                opt = getOpt("\n" + "Elige tu apuesta " + player + ":",
-                             "\nBank points: " + str(players[contextGame["bank"]]["points"]) +
-                             "\nYour points: " + str(players[player]["points"]) + "\n" +
-                             "\n1)Automatic - " + str((players[player]["type"] * players[player]["points"]) // 100) +
-                             "\n2)Manual", "Option:\n", [1, 2], {}, [])
-
+                if players[player]["points"] <= 5:
+                    opt = getOpt("\n" + "Elige tu apuesta " + player + ":",
+                                 "\nBank points: " + str(players[contextGame["bank"]]["points"]) +
+                                 "\nYour points: " + str(players[player]["points"]) + "\n" +
+                                 "\n1)Automatic - " + str(players[player]["points"]) +
+                                 "\n2)Manual", "Option:\n", [1, 2], {}, [])
+                else:
+                    opt = getOpt("\n" + "Elige tu apuesta " + player + ":",
+                                 "\nBank points: " + str(players[contextGame["bank"]]["points"]) +
+                                 "\nYour points: " + str(players[player]["points"]) + "\n" +
+                                 "\n1)Automatic - " + str((players[player]["type"] * players[player]["points"]) // 100) +
+                                 "\n2)Manual", "Option:\n", [1, 2], {}, [])
                 # Modo automatico
                 if opt == 1:
-                    bet = (players[player]["type"] * players[player]["points"]) // 100
-                    if bet > players[contextGame["bank"]]["points"]:
-                        bet = players[contextGame["bank"]]["points"]
-                        players[player]["bet"] = bet
+                    if players[player]["points"] <= 5:
+                        bet = players[player]["points"]
+                        if bet > players[contextGame["bank"]]["points"]:
+                            bet = players[contextGame["bank"]]["points"]
+                            players[player]["bet"] = bet
+                        else:
+                            players[player]["bet"] = bet
                     else:
-                        players[player]["bet"] = bet
+                        bet = (players[player]["type"] * players[player]["points"]) // 100
+                        if bet > players[contextGame["bank"]]["points"]:
+                            bet = players[contextGame["bank"]]["points"]
+                            players[player]["bet"] = bet
+                        else:
+                            players[player]["bet"] = bet
 
                 # Modo manual
                 else:
@@ -181,18 +194,28 @@ def setPlayersBet():
                         # Le impedimos que apueste mas que los puntos de la banca.
                         elif int(bet) > players[contextGame["bank"]]["points"]:
                             print("Caution this be is highest than the bank points.")
+                        elif int(bet) <= 0:
+                            print("Your bet cant be 0.")
                         else:
                             players[player]["bet"] = int(bet)
                             break
 
             # A los boots se les apuesta automaticamente
             else:
-                bet = (players[player]["type"] * players[player]["points"]) // 100
-                if bet > players[contextGame["bank"]]["points"]:
-                    bet = players[contextGame["bank"]]["points"]
-                    players[player]["bet"] = bet
+                if players[player]["points"] <= 5:
+                    bet = players[player]["points"]
+                    if bet > players[contextGame["bank"]]["points"]:
+                        bet = players[contextGame["bank"]]["points"]
+                        players[player]["bet"] = bet
+                    else:
+                        players[player]["bet"] = bet
                 else:
-                    players[player]["bet"] = bet
+                    bet = (players[player]["type"] * players[player]["points"]) // 100
+                    if bet > players[contextGame["bank"]]["points"]:
+                        bet = players[contextGame["bank"]]["points"]
+                        players[player]["bet"] = bet
+                    else:
+                        players[player]["bet"] = bet
 
 
 # Funcion para pagar y cobrar apuestas y guardar los candidatos a banca
@@ -533,10 +556,15 @@ def round_loop():
 
         input("Press enter to continue")
 
-        # Eliminamos jugadores sin puntos
+        removedPlayers = []
+        # Apuntamos los jugadores que queremos eliminar
         for player in contextGame["players"]:
             if players[player]["points"] == 0:
-                contextGame["players"].remove(player)
+                removedPlayers.append(player)
+
+        # Eliminamos a los jugadores
+        for player in removedPlayers:
+            contextGame["players"].remove(player)
 
         # Miramos si tenemos que hacer cambio de banca con los candidatos a banca
         if len(bankCandidates) > 0:

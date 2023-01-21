@@ -184,7 +184,7 @@ def menu02():
                             print("Player not removed!!!")
                             input("Enter to continue")
 
-                    elif opt not in contextGame["players"]:
+                    elif opt not in contextGame["players"] and len(contextGame["players"] < 6):
                         answer = input("Do you want to add " + opt + "?\nY/y = yes: ")
                         if answer == "y" or answer == "Y":
                             contextGame["players"].append(opt)
@@ -211,7 +211,10 @@ def menu02():
                             print("Player not added!!!")
                             input("Enter to continue")
                     else:
-                        print("The player " + opt + " is in the game.")
+                        if opt in contextGame["players"]:
+                            print("The player " + opt + " is in the game.")
+                        else:
+                            print("The game can only have six players.")
                         input("Enter to continue")
 
                 elif opt == "sh":
