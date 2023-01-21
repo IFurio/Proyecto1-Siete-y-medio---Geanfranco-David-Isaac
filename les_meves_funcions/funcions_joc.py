@@ -353,7 +353,7 @@ def round_loop():
                                      "priority", "bet", "points", "round_points", "cards"]
 
                         # Utilizamos el dict players para que los jugadores derrotados tambien aparezcan
-                        userList = list(players.keys())
+                        userList = contextGame["players"]
 
                         # Quisimos dibidir la tabla en dos por eso las dos variables para guardar las strings
                         top = ""
@@ -477,7 +477,7 @@ def round_loop():
                      "priority", "bet", "points", "round_points", "cards"]
 
         # Utilizamos el dict players para que los jugadores derrotados tambien aparezcan
-        userList = list(players.keys())
+        userList = contextGame["players"]
 
         # Quisimos dibidir la tabla en dos por eso las dos variables para guardar las strings
         top = ""
