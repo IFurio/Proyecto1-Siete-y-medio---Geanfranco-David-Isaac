@@ -293,9 +293,23 @@ def menu05():
         if opt == 1:
             print()
         elif opt == 2:
-            print()
+            query = "SELECT player_game.cardgame_id, player_game_round.player_id, MAX(player_game_round.bet_points) as 'max_bet' FROM player_game_round INNER JOIN (SELECT cardgame_id, MAX(bet_points) as max_bet FROM player_game_round WHERE bet_points > 0 GROUP BY cardgame_id) as max_bet ON player_game_round.cardgame_id = max_bet.cardgame_id AND player_game_round.bet_points = max_bet.max_bet INNER JOIN player_game ON player_game.cardgame_id = player_game_round.cardgame_id GROUP BY player_game.cardgame_id, player_game_round.player_id ORDER BY MAX(player_game_round.bet_points) DESC;"
+            data = SelectBBDD(query)
+            report3 = "Max bet in every game".center(62, "*") + "\n" + "Card game ID".ljust(28) + "Player ID".ljust(24) + "Max Bet\n" + "=" * 62 + "\n"
+            for game in data:
+                report3 += str(game[0]).rjust(7) + str(game[1]).rjust(30) + str(game[2]).rjust(20) + "\n"
+            print(report3 + "=" * 62)
+            input("Enter to continue\n")
+
         elif opt == 3:
-            print()
+            query = "SELECT player_game.cardgame_id, player_game_round.player_id, MIN(player_game_round.bet_points) as 'lowest_bet' FROM player_game_round INNER JOIN (SELECT cardgame_id, MIN(bet_points) as lowest_bet FROM player_game_round WHERE bet_points > 0 GROUP BY cardgame_id) as lowest_bets ON player_game_round.cardgame_id = lowest_bets.cardgame_id AND player_game_round.bet_points = lowest_bets.lowest_bet INNER JOIN player_game ON player_game.cardgame_id = player_game_round.cardgame_id GROUP BY player_game.cardgame_id, player_game_round.player_id ORDER BY MIN(player_game_round.bet_points) ASC;"
+            data = SelectBBDD(query)
+            report3 = "Lowest bet in every game".center(62, "*") + "\n" + "Card game ID".ljust(28) + "Player ID".ljust(24) + "Lowest Bet\n" + "=" * 62 + "\n"
+            for game in data:
+                report3 += str(game[0]).rjust(7) + str(game[1]).rjust(30) + str(game[2]).rjust(20) + "\n"
+            print(report3 + "=" * 62)
+            input("Enter to continue\n")
+
         elif opt == 4:
             print()
         elif opt == 5:
