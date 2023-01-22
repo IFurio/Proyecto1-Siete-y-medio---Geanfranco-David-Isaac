@@ -5,11 +5,6 @@ from les_meves_funcions.datos import *
 import pymysql.cursors
 
 
-# dicc = {"A": "KL", "B": "Kulo", "C": 3}
-# prueba = "Select player_id from player"
-# mysql4 = 'insert into countries (country_id, country_name, region_id) Values ("{}","{}",{})'.format(dicc["A"],dicc["B"],dicc["C"])
-
-
 def SelectBBDD(query):
     conn = pymysql.connect(
         host="sieteymedio2023.mysql.database.azure.com", port=3306,
@@ -39,16 +34,6 @@ def InputBBDD(query):
     conn.commit()
 
     conn.close()
-
-
-# print(cursor.description[0][0])
-# resultado = cursor.fetchall()
-# print(resultado)
-# resultado = SelectBBDD("Select player_id from player")
-# exist_id = []
-# for i in range(len(resultado)):
-#     print(resultado[i][0])
-#query = "'insert into player_game_round values ( "{}",{},"{}",{},{},{},{},{})'".format(cardgame_id,round_num,player_id,player_game_round[round_num][player_id]["is_bank"],player_game_round[round_num][player_id]["bet_points"] , player_game_round[round_num][player_id]["cards_value"],player_game_round[round_num][player_id]["starting_round_points"],player_game_round[round_num][player_id]["ending_round_points"])
 
 
 def fetchPlayers(ret="str"):
