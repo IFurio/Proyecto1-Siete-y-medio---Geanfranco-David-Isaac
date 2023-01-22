@@ -315,6 +315,7 @@ def round_loop():
             # Si el player es humano entra en este menu
             if players[player]["human"]:
                 # Lo primero que hacemos al entrar es enseñarle la carta que le acabamos de dar.
+                print("\n" + "*" * 95 + "\n")
                 print("Hi player " + player + " you had drawn " + card)
                 input("Press ENTER to start your round")
 
