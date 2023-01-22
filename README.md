@@ -27,11 +27,11 @@ Una vez abierto el proyecto, ejecutamos el archivo "Principal.py" y ya estaremos
 
 ### 🔗 David Sanchez
 [![github](https://img.shields.io/badge/github-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MatillaSan)
-email: dmatillasanchez.cf@iesesteveterradas.cat
+email: dsanchezmatilla.cf@iesesteveterradas.cat
 
 ### 🔗 Isaac Furio 
 [![github](https://img.shields.io/badge/github-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/IFurio)
-email: ifurio.cf@iesesteveterradas.cat
+email: ifuriomartin.cf@iesesteveterradas.cat
 
 ### 🔗 Geanfranco Biagi
 [![github](https://img.shields.io/badge/github-000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/gbiagi/)
