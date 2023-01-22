@@ -173,14 +173,18 @@ def menu02():
                 if opt != "quit" and opt != "sh":
                     if opt[0] == "-":
                         opt = opt[1:]
-                        answer = input("Do you want to remove " + opt + "?\nY/y = yes: ")
-                        if answer == "y" or answer == "Y":
-                            contextGame["players"].remove(opt)
-                            players.pop(opt)
-                            print("Player has been removed!!!")
-                            input("Enter to continue")
+                        if opt in contextGame["players"]:
+                            answer = input("Do you want to remove " + opt + "?\nY/y = yes: ")
+                            if answer == "y" or answer == "Y":
+                                contextGame["players"].remove(opt)
+                                players.pop(opt)
+                                print("Player has been removed!!!")
+                                input("Enter to continue")
+                            else:
+                                print("Player not removed!!!")
+                                input("Enter to continue")
                         else:
-                            print("Player not removed!!!")
+                            print("This player is not in the game.")
                             input("Enter to continue")
 
                     elif opt not in contextGame["players"] and len(contextGame["players"]) < 6:
