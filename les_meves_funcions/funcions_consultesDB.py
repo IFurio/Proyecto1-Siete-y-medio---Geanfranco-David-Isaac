@@ -72,83 +72,75 @@ def fetchCards(deck):
 
 def addDataToCardGame(moment):
     hora_local = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
-    ultimoID = ultimoID[0][0] + 1
 
     if moment == "beginning":
-        player_game[ultimoID] = {}
-        player_game_round[ultimoID] = {}
-        cardgame[ultimoID] = {"players_num": len(contextGame["players"]),
-                              "start_hour": hora_local, "deck_id": contextGame["deck"]}
+        player_game[0] = {}
+        player_game_round[0] = {}
+        cardgame[0] = {"players_num": len(contextGame["players"]),
+                       "start_hour": hora_local, "deck_id": contextGame["deck"]}
 
     elif moment == "final":
-        cardgame[ultimoID]["end_hour"] = hora_local
-        cardgame[ultimoID]["total_rounds"] = contextGame["round"]
+        cardgame[0]["end_hour"] = hora_local
+        cardgame[0]["total_rounds"] = contextGame["round"]
 
     elif moment == "insert":
         InputBBDD(
             "insert into cardgame ( players, rounds, start_hour, end_hour, deck_id )"
-            "values ( {}, {}, '{}', '{}', '{}' )".format(cardgame[ultimoID]["players_num"],
-                                                         cardgame[ultimoID]["total_rounds"],
-                                                         cardgame[ultimoID]["start_hour"],
-                                                         cardgame[ultimoID]["end_hour"],
-                                                         cardgame[ultimoID]["deck_id"]))
+            "values ( {}, {}, '{}', '{}', '{}' )".format(cardgame[0]["players_num"],
+                                                         cardgame[0]["total_rounds"],
+                                                         cardgame[0]["start_hour"],
+                                                         cardgame[0]["end_hour"],
+                                                         cardgame[0]["deck_id"]))
 
 
 def addDataToPlayerGame(moment):
-    ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
-    ultimoID = ultimoID[0][0] + 1
 
     if moment == "beginning":
         for player in contextGame["players"]:
-            player_game[ultimoID][player] = {"initial_card": players[player]["initial_card"],
-                                             "initial_points": players[player]["points"],
-                                             "final_points": 0}
+            player_game[0][player] = {"initial_card": players[player]["initial_card"],
+                                      "initial_points": players[player]["points"],
+                                      "final_points": 0}
     elif moment == "final":
         for player in contextGame["players"]:
-            player_game[ultimoID][player]["final_points"] = players[player]["points"]
+            player_game[0][player]["final_points"] = players[player]["points"]
 
     elif moment == "insert":
         ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
-        ultimoID = ultimoID[0][0]
-        for player in player_game[ultimoID].keys():
+        for player in player_game[0].keys():
             InputBBDD(
                 "insert into player_game "
                 "values ( {}, '{}', '{}', {}, {} )".format(ultimoID,
                                                            player,
-                                                           player_game[ultimoID][player]["initial_card"],
-                                                           player_game[ultimoID][player]["initial_points"],
-                                                           player_game[ultimoID][player]["final_points"],))
+                                                           player_game[0][player]["initial_card"],
+                                                           player_game[0][player]["initial_points"],
+                                                           player_game[0][player]["final_points"],))
 
 
 def addDataToPlayerGameRound(moment):
-    ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
-    ultimoID = ultimoID[0][0] + 1
 
     if moment == "beginning":
-        player_game_round[ultimoID][contextGame["round"]] = {}
+        player_game_round[0][contextGame["round"]] = {}
         for player in contextGame["players"]:
-            player_game_round[ultimoID][contextGame["round"]][player] = {"bank": players[player]["bank"],
-                                                                         "bet": players[player]["bet"],
-                                                                         "initial_points": players[player]["points"]}
+            player_game_round[0][contextGame["round"]][player] = {"bank": players[player]["bank"],
+                                                                  "bet": players[player]["bet"],
+                                                                  "initial_points": players[player]["points"]}
     elif moment == "final":
         for player in contextGame["players"]:
-            player_game_round[ultimoID][contextGame["round"]][player]["cards_value"] = players[player]["round_points"]
-            player_game_round[ultimoID][contextGame["round"]][player]["final_points"] = players[player]["points"]
+            player_game_round[0][contextGame["round"]][player]["cards_value"] = players[player]["round_points"]
+            player_game_round[0][contextGame["round"]][player]["final_points"] = players[player]["points"]
 
     elif moment == "insert":
         ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
-        ultimoID = ultimoID[0][0]
-        for round in player_game_round[ultimoID].keys():
-            for player in player_game_round[ultimoID][round].keys():
+        for round in player_game_round[0].keys():
+            for player in player_game_round[0][round].keys():
                 InputBBDD(
                     "insert into player_game_round "
                     "values ( {}, {}, '{}', {}, {}, {}, {}, {} )".format(ultimoID,
                                                                          round,
                                                                          player,
-                                                                         player_game_round[ultimoID][round][player]["bank"],
-                                                                         player_game_round[ultimoID][round][player]["bet"],
-                                                                         player_game_round[ultimoID][round][player]["cards_value"],
-                                                                         player_game_round[ultimoID][round][player]["initial_points"],
-                                                                         player_game_round[ultimoID][round][player]["final_points"])
+                                                                         player_game_round[0][round][player]["bank"],
+                                                                         player_game_round[0][round][player]["bet"],
+                                                                         player_game_round[0][round][player]["cards_value"],
+                                                                         player_game_round[0][round][player]["initial_points"],
+                                                                         player_game_round[0][round][player]["final_points"])
                 )
