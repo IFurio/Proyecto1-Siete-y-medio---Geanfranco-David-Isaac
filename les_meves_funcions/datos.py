@@ -105,7 +105,7 @@ menus = {
         "dict": {},
         "excep": []
     },
-    "06": {
+    "menuSelectType": {
         "header": "",
         "textOpts": "Select your profile:\n"
                     "1)Cautious\n"

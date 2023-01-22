@@ -57,7 +57,7 @@ def new_nif(human):
 
 
 def player_profile():
-    profile = menu06()
+    profile = menuSelectType()
     return profile
 
 
@@ -70,8 +70,8 @@ def save_player(name, dni, profile, human_bool):
         name_prof = "Bold"
     print("*" * 95 + "\n" + figlet_format(" " * 24 + "New Player", font="doom") + "*" * 95 + "\n\n" +
           "Name: " + name + "\n" + "DNI: " + dni + "\n" + "Profile: " + name_prof + "\n")
-    save = input("Save player? Y/N: ")
     while True:
+        save = input("Save player? Y/N: ")
         if save.upper() == "Y":
             return True
         elif save.upper() == "N":
@@ -81,12 +81,12 @@ def save_player(name, dni, profile, human_bool):
             print("Incorrect option.")
 
 
-def menu06():
+def menuSelectType():
     while True:
-        opt = les_meves_funcions.funcions_menu.getOpt(menus["06"]["header"],
-                                                      menus["06"]["textOpts"],
-                                                      menus["06"]["inputOptText"],
-                                                      menus["06"]["rangeList"], {}, [])
+        opt = les_meves_funcions.funcions_menu.getOpt(menus["menuSelectType"]["header"],
+                                                      menus["menuSelectType"]["textOpts"],
+                                                      menus["menuSelectType"]["inputOptText"],
+                                                      menus["menuSelectType"]["rangeList"], {}, [])
         if opt == 1:
             profile = 30
             return profile
