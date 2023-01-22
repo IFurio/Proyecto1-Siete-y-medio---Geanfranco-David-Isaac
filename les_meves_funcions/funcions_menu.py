@@ -267,7 +267,7 @@ def menu02():
         else:
             break
 
-
+# (('43741950K', Decimal('77'), 2, datetime.timedelta(seconds=260))
 def menu04():
     while True:
         opt = getOpt(menus["04"]["header"],
@@ -275,11 +275,29 @@ def menu04():
                      menus["04"]["inputOptText"],
                      menus["04"]["rangeList"], {}, [])
         if opt == 1:
-            print()
+            query = "select * from ranking order by gained_points desc"
+            data_menu = SelectBBDD(query)
+            ranking_1 = "\n" + "*" * 80 + "\n" + "Player ID".ljust(10) + " "*5 + "Earnings".ljust(25) + "Games played".rjust(15) + " "*5 + "Minutes Played".rjust(15) + "\n" + "*" * 80 + "\n"
+            for i in data_menu:
+                ranking_1 += str(i[0]).rjust(10) + " "*5 + str(i[1]).ljust(25) + str(i[2]).rjust(15) + " "*5 + str(i[3]).rjust(15) + "\n"
+            print(ranking_1)
+            input("Press enter to continue")
         elif opt == 2:
-            print()
+            query = "select * from ranking order by games_played desc"
+            data_menu = SelectBBDD(query)
+            ranking_2 = "\n" + "*" * 80 + "\n" + "Player ID".ljust(10) + " "*5 + "Earnings".ljust(25) + "Games played".rjust(15) + " "*5 + "Minutes Played".rjust(15) + "\n" + "*" * 80 + "\n"
+            for i in data_menu:
+                ranking_2 += str(i[0]).rjust(10) + " "*5 + str(i[1]).ljust(25) + str(i[2]).rjust(15) + " "*5 + str(i[3]).rjust(15) + "\n"
+            print(ranking_2)
+            input("Press enter to continue")
         elif opt == 3:
-            print()
+            query = "select * from ranking order by time_played desc"
+            data_menu = SelectBBDD(query)
+            ranking_3 = "\n" + "*" * 80 + "\n" + "Player ID".ljust(10) + " "*5 + "Earnings".ljust(25) + "Games played".rjust(15) + " "*5 + "Minutes Played".rjust(15) + "\n" + "*" * 80 + "\n"
+            for i in data_menu:
+                ranking_3 += str(i[0]).rjust(10) + " "*5 + str(i[1]).ljust(25) + str(i[2]).rjust(15) + " "*5 + str(i[3]).rjust(15) + "\n"
+            print(ranking_3)
+            input("Press enter to continue")
         else:
             break
 
@@ -303,11 +321,31 @@ def menu05():
         elif opt == 6:
             print()
         elif opt == 7:
-            print()
+            query = "select cardgame_id, count(is_bank) as bank_players from player_game_round where is_bank=1 group by cardgame_id"
+            data_menu = SelectBBDD(query)
+            report_7 = "\n" + "*" * 40 + "\n" + "ID Game".ljust(10) + "Users who have been bank".rjust(25) + "\n" + "*" * 40 + "\n"
+            for i in data_menu:
+                report_7 += str(i[0]).rjust(7) + str(i[1]).rjust(25) + "\n"
+            print(report_7)
+            input("Press enter to continue")
         elif opt == 8:
-            print()
+            query = "select cardgame_id, avg(bet_points) from player_game_round group by cardgame_id"
+            data_menu = SelectBBDD(query)
+            report_8 = "\n" + "*" * 40 + "\n" + "ID Game".ljust(10) + "Average bet".rjust(
+                25) + "\n" + "*" * 40 + "\n"
+            for i in data_menu:
+                report_8 += str(i[0]).rjust(7) + str(i[1]).rjust(25) + "\n"
+            print(report_8)
+            input("Press enter to continue")
         elif opt == 9:
-            print()
+            query = "select cardgame_id, avg(bet_points) as avg_bet, round_num from player_game_round where bet_points != 0 and round_num = 1 group by cardgame_id, round_num"
+            data_menu = SelectBBDD(query)
+            report_8 = "\n" + "*" * 40 + "\n" + "ID Game".ljust(10) + "Average bet 1st round".rjust(
+                25) + "\n" + "*" * 40 + "\n"
+            for i in data_menu:
+                report_8 += str(i[0]).rjust(7) + str(i[1]).rjust(25) + "\n"
+            print(report_8)
+            input("Press enter to continue")
         elif opt == 10:
             print()
         else:

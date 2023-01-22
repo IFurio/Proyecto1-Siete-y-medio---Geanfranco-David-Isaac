@@ -57,7 +57,7 @@ def drawCard(deckList):
 # Se ordenan en una lista dentro de contextGame["players"] en orden ascendente para sinplificar el curso de la partida.
 def orderPlayers():
     for pas in range(len(contextGame["players"]) - 1):
-        # Esta variable sirve para no tener que hacer comprovaciones de mas
+        # Esta variable sirve para no tener que hacer comprobaciones de mas
         listIsOrdered = True
         for i in range(len(contextGame["players"]) - 1 - pas):
             # Aqui se comprueba si la carta inicial del jugador i es mas alta que la de i + 1 y se cambia de puesto.
@@ -111,7 +111,7 @@ def SetPriority():
     for i in range(len(contextGame["players"])):
         players[contextGame["players"][i]]["priority"] = i + 1
 
-    # Se le da banka al jugador con mas prioridad
+    # Se le da banca al jugador con mas prioridad
     players[contextGame["players"][-1]]["bank"] = True
     # Se apunta ese jugador en contextGame["bank"]
     contextGame["bank"] = contextGame["players"][-1]
