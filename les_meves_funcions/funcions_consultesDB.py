@@ -106,6 +106,7 @@ def addDataToPlayerGame(moment):
 
     elif moment == "insert":
         ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
+        ultimoID = ultimoID[0][0]
         for player in player_game[0].keys():
             InputBBDD(
                 "insert into player_game "
@@ -131,6 +132,7 @@ def addDataToPlayerGameRound(moment):
 
     elif moment == "insert":
         ultimoID = SelectBBDD("select max(cardgame_id) from cardgame")
+        ultimoID = ultimoID[0][0]
         for round in player_game_round[0].keys():
             for player in player_game_round[0][round].keys():
                 InputBBDD(
