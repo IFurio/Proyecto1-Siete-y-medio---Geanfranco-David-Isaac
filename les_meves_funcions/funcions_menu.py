@@ -112,7 +112,6 @@ def menu02():
                            + "ACTUAL PLAYERS IN GAME".center(95) + "\n"
 
             data = ""
-            print(contextGame["players"])
             for player in contextGame["players"]:
                 data += player.rjust(40) + " - " + players[player]["name"] + " - "
                 if players[player]["human"]:
@@ -219,7 +218,6 @@ def menu02():
 
                 elif opt == "sh":
                     datos = ""
-                    print(contextGame["players"])
                     for player in contextGame["players"]:
                         datos += player.rjust(40) + " - " + players[player]["name"] + " - "
                         if players[player]["human"]:
@@ -312,7 +310,8 @@ def menu05():
                      menus["05"]["inputOptText"],
                      menus["05"]["rangeList"], {}, [])
         if opt == 1:
-            print()
+            print("No implementado")
+            input("ENTER TO CONTINUE")
         elif opt == 2:
             query = "SELECT player_game.cardgame_id, player_game_round.player_id, MAX(player_game_round.bet_points) as 'max_bet' FROM player_game_round INNER JOIN (SELECT cardgame_id, MAX(bet_points) as max_bet FROM player_game_round WHERE bet_points > 0 GROUP BY cardgame_id) as max_bet ON player_game_round.cardgame_id = max_bet.cardgame_id AND player_game_round.bet_points = max_bet.max_bet INNER JOIN player_game ON player_game.cardgame_id = player_game_round.cardgame_id GROUP BY player_game.cardgame_id, player_game_round.player_id ORDER BY MAX(player_game_round.bet_points) DESC;"
             data = SelectBBDD(query)
@@ -332,11 +331,14 @@ def menu05():
             input("Enter to continue\n")
 
         elif opt == 4:
-            print()
+            print("No implementado")
+            input("ENTER TO CONTINUE")
         elif opt == 5:
-            print()
+            print("No implementado")
+            input("ENTER TO CONTINUE")
         elif opt == 6:
-            print()
+            print("No implementado")
+            input("ENTER TO CONTINUE")
         elif opt == 7:
             query = "select cardgame_id, count(is_bank) as bank_players from player_game_round where is_bank=1 group by cardgame_id"
             data_menu = SelectBBDD(query)
@@ -364,6 +366,7 @@ def menu05():
             print(report_8)
             input("Press enter to continue")
         elif opt == 10:
-            print()
+            print("No implementado")
+            input("ENTER TO CONTINUE")
         else:
             break
