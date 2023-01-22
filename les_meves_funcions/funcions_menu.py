@@ -112,7 +112,6 @@ def menu02():
                            + "ACTUAL PLAYERS IN GAME".center(95) + "\n"
 
             data = ""
-            print(contextGame["players"])
             for player in contextGame["players"]:
                 data += player.rjust(40) + " - " + players[player]["name"] + " - "
                 if players[player]["human"]:

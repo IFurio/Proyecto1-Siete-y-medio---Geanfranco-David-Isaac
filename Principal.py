@@ -28,7 +28,7 @@ while not leave:
             # Se preparan las cosas para que empiece la partida
             SetRound_setting()
 
-            # Guardamos datos de players que necesitamos del princio de la partida
+            # Guardamos datos de players que necesitamos del principio de la partida
             addDataToPlayerGame("beginning")
 
             # Bucle en el que se juegan las partidas

@@ -4,7 +4,7 @@ from les_meves_funcions.datos import *
 import random
 
 
-# Funcion de comprovaciones
+# Funcion de comprobaciones
 def check_settings():
     try:
         if len(contextGame["players"]) < 2:
@@ -14,7 +14,7 @@ def check_settings():
             raise ValueError("Select a card deck to start the game!")
         else:
             # Una vez sabemos que hay un mazo seleccionado y suficientes jugadores para empezar la partida,
-            # guardamos la info inicial de la paritda (mirar archivo funciones_consultasDB, funcion addDataToCardGame)
+            # guardamos la info inicial de la partida (mirar archivo funciones_consultasDB, funcion addDataToCardGame)
             # y hacemos una consulta en la DB para crear el mazo.
             addDataToCardGame("beginning")
             contextGame["deck"] = fetchCards(contextGame["deck"])
@@ -287,7 +287,7 @@ def playersWinningBank(bank):
 
 # Funcion loop de las rondas
 def round_loop():
-    # La partida se juega mientras hay las rondas no pasan del maximo o minetras haya un minimo de dos players jugando
+    # La partida se juega mientras las rondas no pasan del maximo o mientras haya un minimo de dos jugadores con puntos
     while checkMinimun2PlayerInGame() and contextGame["round"] <= contextGame["maxRounds"]:
         # Se devuelven las cartas al mazo, se ponen los puntos a cero y se resetean los candidatos a la banca
         bankCandidates = []
@@ -316,7 +316,7 @@ def round_loop():
             if players[player]["human"]:
                 # Lo primero que hacemos al entrar es enseñarle la carta que le acabamos de dar.
                 print("Hi player " + player + " you had drawn " + card)
-                input("Press ENTER to start your rond")
+                input("Press ENTER to start your round")
 
                 while True:
                     opt = getOpt(menus["game"]["header"],
@@ -350,7 +350,7 @@ def round_loop():
                                 players[player]["cards"].append(card)
                                 players[player]["round_points"] += contextGame["deck"][card]["realValue"]
                                 print("You had drawn " + card)
-                                input("Press ENTER to start your rond")
+                                input("Press ENTER to start your round")
 
                         # Si no le repartimos carta miramos los puntos que tiene y le avisamos de lo que pasa
                         elif players[player]["round_points"] == 7.5:
@@ -480,7 +480,7 @@ def round_loop():
                             players[player]["cards"].append(card)
                             players[player]["round_points"] += contextGame["deck"][card]["realValue"]
 
-                        # En caso de que su nivel de resiesgo se pase se planta
+                        # En caso de que su nivel de riesgo se pase se planta
                         else:
                             break
 
@@ -494,7 +494,7 @@ def round_loop():
         # Hueco para insert de ronda
         addDataToPlayerGameRound("final")
 
-        # Prints para hacer pruebas de funcionamiento
+        # Printamos la tabla de jugadores
         print("Round: " + str(contextGame["round"]) + " of " + str(contextGame["maxRounds"]) + "\n")
         statsList = ["id", "name", "human", "type", "bank", "initial_card",
                      "priority", "bet", "points", "round_points", "cards"]
@@ -502,13 +502,13 @@ def round_loop():
         # Utilizamos el dict players para que los jugadores derrotados tambien aparezcan
         userList = contextGame["players"]
 
-        # Quisimos dibidir la tabla en dos por eso las dos variables para guardar las strings
+        # Quisimos dividir la tabla en dos por eso las dos variables para guardar las strings
         top = ""
         bottom = ""
 
         # Para hacer una linea por stat iteramos sobre la statsList
         for stat in statsList:
-            # Para printar una linea del stat actual para cada jugador isteramos sobre userList
+            # Para printar una linea del stat actual para cada jugador iteramos sobre userList
             for i in range(len(userList)):
                 # Este condicional lo utilizamos para hacer la division de la tabla,
                 # en caso de que i sea mayor que dos (lo que significaria que ya ha guardado 3 users),
