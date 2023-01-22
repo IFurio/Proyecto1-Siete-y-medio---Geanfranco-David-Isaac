@@ -1,4 +1,4 @@
-#Imports
+# Imports
 import random
 from les_meves_funcions.funcions_consultesDB import *
 import les_meves_funcions.funcions_menu
@@ -17,6 +17,8 @@ def new_name():
         else:
             break
     return name
+
+
 def new_nif(human):
     # Comprobación del número del DNI al crear un nuevo jugador
     resultado = SelectBBDD("Select player_id from player")
@@ -47,9 +49,9 @@ def new_nif(human):
                 print("Incorrect format.")
         else:
             dni = ""
-            for i in range(1,9):
-                dni += str(random.randint(1,9))
-            dni = dni + letrasDni[random.randrange(0,len(letrasDni))]
+            for i in range(1, 9):
+                dni += str(random.randint(1, 9))
+            dni = dni + letrasDni[random.randrange(0, len(letrasDni))]
             break
     return dni.upper()
 
@@ -58,6 +60,7 @@ def player_profile():
     profile = menu06()
     return profile
 
+
 def save_player(name, dni, profile, human_bool):
     if profile == 30:
         name_prof = "Cautious"
@@ -65,7 +68,7 @@ def save_player(name, dni, profile, human_bool):
         name_prof = "Moderated"
     elif profile == 50:
         name_prof = "Bold"
-    print("*" * 95 + "\n" + figlet_format(" " * 24 + "New Player", font="doom") + "*" * 95 + "\n\n"+
+    print("*" * 95 + "\n" + figlet_format(" " * 24 + "New Player", font="doom") + "*" * 95 + "\n\n" +
           "Name: " + name + "\n" + "DNI: " + dni + "\n" + "Profile: " + name_prof + "\n")
     save = input("Save player? Y/N: ")
     while True:
@@ -75,14 +78,15 @@ def save_player(name, dni, profile, human_bool):
             print("Player discarded.")
             return False
         else:
-            print("Incorrec option.")
+            print("Incorrect option.")
+
 
 def menu06():
     while True:
         opt = les_meves_funcions.funcions_menu.getOpt(menus["06"]["header"],
-                     menus["06"]["textOpts"],
-                     menus["06"]["inputOptText"],
-                     menus["06"]["rangeList"], {}, [])
+                                                      menus["06"]["textOpts"],
+                                                      menus["06"]["inputOptText"],
+                                                      menus["06"]["rangeList"], {}, [])
         if opt == 1:
             profile = 30
             return profile
@@ -94,21 +98,24 @@ def menu06():
             return profile
         else:
             break
+
+
 def newPlayer_human():
     print("*" * 95 + "\n" +
           figlet_format(" " * 24 + "New Player", font="doom") +
           "*" * 95 + "\n")
     name = new_name()
     dni = new_nif(1)
-    print("\n","*"*95,"\nNombre: ",name,"\nDNI: ",dni)
+    print("\n", "*"*95, "\nNombre: ", name, "\nDNI: ", dni)
     profile = player_profile()
     save = save_player(name, dni, profile, 1)
     if save:
-        query = "INSERT INTO player VALUES ('{}','{}',{},{})".format(dni,name,profile,1)
+        query = "INSERT INTO player VALUES ('{}','{}',{},{})".format(dni, name, profile, 1)
         InputBBDD(query)
         print("Player saved")
     else:
         return
+
 
 def newPlayer_boot():
     print("*" * 95 + "\n" +
@@ -116,11 +123,11 @@ def newPlayer_boot():
           "*" * 95 + "\n")
     name = new_name()
     dni = new_nif(0)
-    print("\n","*"*95,"\nNombre: ",name,"\nDNI: ",dni)
+    print("\n", "*"*95, "\nNombre: ", name, "\nDNI: ", dni)
     profile = player_profile()
     save = save_player(name, dni, profile, 0)
     if save:
-        query = "INSERT INTO player VALUES ('{}','{}',{},{})".format(dni,name,profile,0)
+        query = "INSERT INTO player VALUES ('{}','{}',{},{})".format(dni, name, profile, 0)
         InputBBDD(query)
         print("Player saved")
     else:

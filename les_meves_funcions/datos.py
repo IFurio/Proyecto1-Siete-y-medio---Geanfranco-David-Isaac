@@ -1,6 +1,19 @@
 # Imports
 from pyfiglet import figlet_format
 
+
+def resetDicts():
+    players.clear()
+    cardgame.clear()
+    player_game.clear()
+    player_game_round.clear()
+    contextGame["players"].clear()
+    contextGame["round"] = 1
+    contextGame["maxRounds"] = 0
+    contextGame["deck"] = ""
+    contextGame["bank"] = ""
+
+
 players = {}
 
 cardgame = {}
@@ -93,14 +106,25 @@ menus = {
         "excep": []
     },
     "06": {
-            "header": "",
-            "textOpts": "Select your profile:\n"
-                        "1)Cautious\n"
-                        "2)Moderated\n"
-                        "3)Bold",
-            "inputOptText": "Option: ",
-            "rangeList": [1, 2, 3, 4],
-            "dict": {},
-            "excep": []
-        }
+        "header": "",
+        "textOpts": "Select your profile:\n"
+                    "1)Cautious\n"
+                    "2)Moderated\n"
+                    "3)Bold",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3],
+        "dict": {},
+        "excep": []
+        },
+    "game": {
+        "header": "*" * 95 + "\n" +
+                  figlet_format(" " * 11 + "Seven and half", font="doom") +
+                  "*" * 95 + "\n\n",
+        "textOpts": "1)Draw a card\n2)View your profile\n3)View the game stats\n4)Automatic play\n5)Give up your turn",
+        "inputOptText": "Option: ",
+        "rangeList": [1, 2, 3, 4, 5],
+        "dict": {},
+        "excep": []
+    }
 }
+menuRounds = "*" * 95 + "\n" + figlet_format(" " * 5 + "ROUNDS", font="colossal") + "*" * 95 + "\n"
