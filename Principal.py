@@ -48,9 +48,9 @@ while not leave:
             input("Enter to continue")
 
             # En este momento se hacen los inserts
-            # addDataToCardGame("insert")
-            # addDataToPlayerGame("insert")
-            # addDataToPlayerGameRound("insert")
+            addDataToCardGame("insert")
+            addDataToPlayerGame("insert")
+            addDataToPlayerGameRound("insert")
 
             # Se reinician todos los diccionarios y las variables
             resetDicts()
